@@ -1,13 +1,10 @@
 package com.example.ripzery.traffisible;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +13,7 @@ import java.io.InputStreamReader;
 /**
  * Created by visit on 8/31/14 AD.
  */
-public class AsyncJSON extends AsyncTask<String, String, JSONObject>{
+public class AsyncJSON extends AsyncTask<String, String, String> {
 
     private String url = "";
 
@@ -25,7 +22,7 @@ public class AsyncJSON extends AsyncTask<String, String, JSONObject>{
     }
 
     @Override
-    protected JSONObject doInBackground(String... strings) {
+    protected String doInBackground(String... strings) {
 
         DefaultHttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(url);
@@ -37,14 +34,11 @@ public class AsyncJSON extends AsyncTask<String, String, JSONObject>{
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             while((line = reader.readLine()) != null){
                 builder.append(line);
-                builder.append("\n");
+//                Log.d("MSG",line);
             }
-            Log.d("JSON", builder.toString());
-            JSONObject json = new JSONObject(builder.toString());
-            return json;
+
+            return builder.toString();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
 
