@@ -1,23 +1,35 @@
 package com.example.ripzery.traffisible;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -34,7 +46,7 @@ public class MyActivity extends Activity {
     private String randomString = "";
     private String url;
     private String passKey = "";
-    private ArrayList<String> newsDescription;
+    private ArrayList<News> listNews;
 
     public static String md5(String s) {
         MessageDigest digest;
@@ -52,36 +64,67 @@ public class MyActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_my);
+
+
+        int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+        if (actionBarTitleId > 0) {
+            TextView title = (TextView) findViewById(actionBarTitleId);
+            if (title != null) {
+                title.setTextColor(Color.WHITE);
+            }
+        }
+        ActionBar bar = getActionBar();
+        bar.setCustomView(R.layout.actionbar_view);
+        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
+                | ActionBar.DISPLAY_SHOW_HOME);
+
+
+
+
+
         randomString = getRandomString();
         passKey = md5(APP_ID + randomString) + md5(KEY + randomString);
         url = getURL("getIncident", "JSON", APP_ID);
-        connectJSON = new AsyncJSON(url);
+        connectJSON = new AsyncJSON(this, url);
         try {
             jsonString = connectJSON.execute().get();
             Log.d("TADA", url);
-//            TextView tvFront1 = (TextView)findViewById(R.id.tvFront1);
             Gson gson = new Gson();
             JsonParser jsonParser = new JsonParser();
             jsonElement = jsonParser.parse(jsonString);
             jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
-            News[] listNews = gson.fromJson(jsonElement, News[].class);
+            News[] news = gson.fromJson(jsonElement, News[].class);
 
-            Log.d("News Size", "" + listNews.length);
-//            tvFront1.setText("There are "+listNews.length+" news available now.");
+            Log.d("News Size", "" + news.length);
 
-            newsDescription = new ArrayList<String>();
-            for (News temp : listNews) {
-                Log.d("All ID", "" + temp.getId());
-                newsDescription.add(temp.getDescription());
+            listNews = new ArrayList<News>();
+            for (News temp : news) {
+//                Log.d("All ID", "" + temp.getId());
+                listNews.add(temp);
             }
 
-            ListView listView = (ListView) findViewById(R.id.list);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, newsDescription);
 
-            listView.setAdapter(adapter);
+            final DynamicListView listView = (DynamicListView) findViewById(R.id.dynamiclistview);
+            final CardAdapter adapter = new CardAdapter(this, listNews);
+            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
+            listView.setAdapter(animationAdapter);
+
+            listView.enableSwipeToDismiss(new OnDismissCallback() {
+                @Override
+                public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
+                    for (int position : ints)
+                        listNews.remove(position);
+                    adapter.notifyDataSetChanged();
+//                    adapter(listNews.get(position));
+                }
+            });
 
 
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -126,5 +169,30 @@ public class MyActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class StableArrayAdapter extends ArrayAdapter<String> {
+
+        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+
+        public StableArrayAdapter(Context context, int textViewResourceId,
+                                  List<String> objects) {
+            super(context, textViewResourceId, objects);
+            for (int i = 0; i < objects.size(); ++i) {
+                mIdMap.put(objects.get(i), i);
+            }
+        }
+
+        @Override
+        public long getItemId(int position) {
+            String item = getItem(position);
+            return mIdMap.get(item);
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+
     }
 }

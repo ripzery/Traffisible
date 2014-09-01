@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="action_bar_panel">#303F9F</color>
+    <color name="actionbar_text">#fafafa</color>
+    <color name="navigation_drawer">#000000</color>
+    <color name="incident_card">#000000</color>
+    <color name="list_divider">#000000</color>
+    <color name="cardview_background">#3F51B5</color>
+    <color name="text">#fafafa</color>
+    <color name="app_background">#3f51b5</color>
+    <color name="list_row_hover_start_color">#000000</color>
+    <color name="list_row_hover_end_color">#000000</color>
+
+</resources>

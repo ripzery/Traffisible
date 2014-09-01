@@ -1,6 +1,9 @@
 package com.example.ripzery.traffisible;
 
 import android.os.AsyncTask;
+import android.widget.Toast;
+
+import com.google.gson.stream.MalformedJsonException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -14,10 +17,11 @@ import java.io.InputStreamReader;
  * Created by visit on 8/31/14 AD.
  */
 public class AsyncJSON extends AsyncTask<String, String, String> {
-
+    private MyActivity myActivity;
     private String url = "";
 
-    public AsyncJSON(String url){
+    public AsyncJSON(MyActivity myActivity, String url) {
+        this.myActivity = myActivity;
         this.url = url;
     }
 
@@ -38,6 +42,8 @@ public class AsyncJSON extends AsyncTask<String, String, String> {
             }
 
             return builder.toString();
+        } catch (MalformedJsonException e) {
+            Toast.makeText(myActivity, "Cannot fetch data, Please try again", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
