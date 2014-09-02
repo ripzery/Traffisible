@@ -2,7 +2,6 @@ package com.example.ripzery.traffisible;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -20,16 +18,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.TimedUndoAdapter;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -95,6 +91,9 @@ public class MyActivity extends Activity {
             JsonParser jsonParser = new JsonParser();
             jsonElement = jsonParser.parse(jsonString);
             jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
+//            JsonReader reader = new JsonReader(new StringReader(jsonElement.getAsString()));
+//            reader.setLenient(true);
+
             News[] news = gson.fromJson(jsonElement, News[].class);
 
             Log.d("News Size", "" + news.length);
@@ -108,22 +107,38 @@ public class MyActivity extends Activity {
 
             final DynamicListView listView = (DynamicListView) findViewById(R.id.dynamiclistview);
             final CardAdapter adapter = new CardAdapter(this, listNews);
-            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
-            animationAdapter.setAbsListView(listView);
-            listView.setAdapter(animationAdapter);
+//            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+//            animationAdapter.setAbsListView(listView);
+//            listView.setAdapter(animationAdapter);
 
-            listView.enableSwipeToDismiss(new OnDismissCallback() {
-                @Override
-                public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
-                    for (int position : ints)
-                        listNews.remove(position);
-                    adapter.notifyDataSetChanged();
+
+//            listView.enableSwipeToDismiss(new OnDismissCallback() {
+//                @Override
+//                public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
+//                    for (int position : ints)
+//                        listNews.remove(position);
+//                    adapter.notifyDataSetChanged();
 //                    adapter(listNews.get(position));
-                }
-            });
+//                }
+//            });
+
+            TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, MyActivity.this,
+                    new OnDismissCallback() {
+                        @Override
+                        public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
+                            for (int position : ints) {
+                                listNews.remove(position);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
+            timedUndoAdapter.setAbsListView(listView);
+            listView.setAdapter(timedUndoAdapter);
+            listView.enableSimpleSwipeUndo();
 
 
         } catch (JsonSyntaxException e) {
+            onCreate(savedInstanceState);
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -171,28 +186,4 @@ public class MyActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class StableArrayAdapter extends ArrayAdapter<String> {
-
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-
-        public StableArrayAdapter(Context context, int textViewResourceId,
-                                  List<String> objects) {
-            super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
-            }
-        }
-
-        @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
-    }
 }

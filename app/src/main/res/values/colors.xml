@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="action_bar_panel">#303F9F</color>
+    <color name="action_bar_panel">#ff9800</color>
     <color name="actionbar_text">#fafafa</color>
     <color name="navigation_drawer">#000000</color>
     <color name="incident_card">#000000</color>
