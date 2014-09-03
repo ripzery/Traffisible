@@ -5,14 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".MyActivity">
 
-
-    <com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
-        android:id="@+id/dynamiclistview"
+    <fragment
+        android:id="@+id/fragment_Traffic_News"
+        android:name="com.example.ripzery.traffisible.ReportNewsFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="20dp" />
+        android:layout_height="match_parent" />
+
 
     <ListView
         android:id="@+id/left_drawer"
@@ -23,5 +21,7 @@
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp" />
+
+
 </android.support.v4.widget.DrawerLayout>
 
