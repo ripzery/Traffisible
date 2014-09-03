@@ -4,36 +4,15 @@ import android.app.ActionBar;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
-import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
-import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.TimedUndoAdapter;
-
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 
 public class MyActivity extends FragmentActivity {
 
-    private static String APP_ID = "61d787a9";
+    /*private static String APP_ID = "61d787a9";
     private static String KEY = "jADjas9PXU";
     private AsyncConnect connect;
     private AsyncJSON connectJSON;
@@ -44,9 +23,9 @@ public class MyActivity extends FragmentActivity {
     private String randomString = "";
     private String url;
     private String passKey = "";
-    private ArrayList<News> listNews;
+    private ArrayList<News> listNews;*/
 
-    public static String md5(String s) {
+/*    public static String md5(String s) {
         MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("MD5");
@@ -57,12 +36,19 @@ public class MyActivity extends FragmentActivity {
             e.printStackTrace();
         }
         return "";
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
+
+        if (savedInstanceState == null) {
+            ReportNewsFragment report = new ReportNewsFragment();
+            report.setArguments(getIntent().getExtras());
+            getFragmentManager().beginTransaction().add(R.id.fragment_Traffic_News, report).commit();
+        }
+
+//        setContentView(R.layout.activity_my);
 
         int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
         if (actionBarTitleId > 0) {
@@ -76,7 +62,7 @@ public class MyActivity extends FragmentActivity {
         bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
                 | ActionBar.DISPLAY_SHOW_HOME);
 
-        randomString = getRandomString();
+        /*randomString = getRandomString();
         passKey = md5(APP_ID + randomString) + md5(KEY + randomString);
         url = getURL("getIncident", "JSON", APP_ID);
         connectJSON = new AsyncJSON(this, url);
@@ -131,10 +117,10 @@ public class MyActivity extends FragmentActivity {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
-    public String getURL(String apiType, String apiFormat) {
+    /*public String getURL(String apiType, String apiFormat) {
         return "http://api.traffy.in.th/apis/apitraffy.php?api=" + apiType + "&key=" + passKey + "&format=" + apiFormat;
     }
 
@@ -152,7 +138,7 @@ public class MyActivity extends FragmentActivity {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
