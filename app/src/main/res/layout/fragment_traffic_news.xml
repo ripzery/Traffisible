@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/reportfragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
+    <com.nhaarman.listviewanimations.itemmanipulation.DynamicListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/dynamiclistview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,4 +8,9 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="20dp" />
 
-</fragment>
+
+
+
+
+
+

@@ -36,7 +36,7 @@ public class AsyncJSON extends AsyncTask<String, String, String> {
             HttpResponse response = client.execute(get);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            while((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 builder.append(line);
 //                Log.d("MSG",line);
             }

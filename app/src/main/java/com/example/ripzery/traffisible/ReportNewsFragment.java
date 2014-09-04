@@ -1,8 +1,9 @@
 package com.example.ripzery.traffisible;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.TimedUndoAdapter;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -50,8 +53,10 @@ public class ReportNewsFragment extends Fragment {
     private String passKey = "";
     private ArrayList<News> listNews;
     private MyActivity myActivity;
+    private View mRootView;
 
     public ReportNewsFragment() {
+
     }
 
     public static String md5(String s) {
@@ -70,13 +75,27 @@ public class ReportNewsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.myActivity = (MyActivity) activity;
+        Log.d("onAttach", "Working");
+//        this.myActivity = (MyActivity) activity;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_traffic_news, container, false);
+        this.mRootView = view;
+        this.myActivity = (MyActivity) getActivity();
+        loadContent();
+        return view;
+    }
+
+    public void loadContent() {
         randomString = getRandomString();
         passKey = md5(APP_ID + randomString) + md5(KEY + randomString);
         url = getURL("getIncident", "JSON", APP_ID);
@@ -99,32 +118,35 @@ public class ReportNewsFragment extends Fragment {
             }
 
 
-            final DynamicListView listView = (DynamicListView) myActivity.findViewById(R.id.dynamiclistview);
+            final DynamicListView listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
             final CardAdapter adapter = new CardAdapter(myActivity, listNews);
+            listView.setAdapter(adapter);
 
-//            TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, myActivity,
-//                    new OnDismissCallback() {
-//                        @Override
-//                        public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
-//                            for (int position : ints) {
-//                                listNews.remove(position);
-//                                adapter.notifyDataSetChanged();
-//                            }
-//                        }
-//                    });
-//            timedUndoAdapter.setAbsListView(listView);
-//            listView.setAdapter(timedUndoAdapter);
-//            listView.enableSimpleSwipeUndo();
+
+            TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, myActivity,
+                    new OnDismissCallback() {
+                        @Override
+                        public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
+                            for (int position : ints) {
+                                listNews.remove(position);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
+            timedUndoAdapter.setAbsListView(listView);
+            listView.setAdapter(timedUndoAdapter);
+            listView.enableSimpleSwipeUndo();
 
 
         } catch (JsonSyntaxException e) {
-            onCreate(savedInstanceState);
+            loadContent();
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
     }
 
     public String getURL(String apiType, String apiFormat) {
@@ -145,12 +167,5 @@ public class ReportNewsFragment extends Fragment {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_traffic_news, container, false);
-        return view;
     }
 }

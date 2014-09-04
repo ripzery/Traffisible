@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +75,7 @@ public class CardAdapter extends BaseAdapter implements UndoAdapter {
         ViewHolder holder = (ViewHolder) rowView.getTag();
         News news = listNews.get(position);
         String s = news.getTitle();
-        Log.d("test", s);
+//        Log.d("test", s);
         holder.tvTitle.setText(s);
         holder.tvTitle.setTypeface(tfBold);
 
