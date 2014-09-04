@@ -18,12 +18,12 @@
 
 <resources>
 
-    <style name="Theme.Traffisible" parent="@style/Theme.AppCompat.Light">
+    <style name="Theme.Traffisible" parent="Theme.AppCompat.Light">
         <item name="android:actionBarStyle">@style/ActionBar.Solid.Traffisible</item>
     </style>
 
-    <style name="ActionBar.Solid.Traffisible" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
-        <item name="android:background">@drawable/ab_solid_traffisible</item>
+    <style name="ActionBar.Solid.Traffisible" parent="Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:background">@color/action_bar_panel</item>
     </style>
 
 

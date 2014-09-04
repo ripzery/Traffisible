@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.IconTextView;
 import android.widget.TextView;
 
+import com.example.ripzery.traffisible.JSONObjectClass.News;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.UndoAdapter;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.ripzery.traffisible;
+package com.example.ripzery.traffisible.Fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,13 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ListAdapter;
 
+import com.example.ripzery.traffisible.AsyncTask.AsyncConnect;
+import com.example.ripzery.traffisible.AsyncTask.AsyncJSON;
+import com.example.ripzery.traffisible.CardAdapter;
+import com.example.ripzery.traffisible.JSONObjectClass.News;
+import com.example.ripzery.traffisible.MyActivity;
+import com.example.ripzery.traffisible.R;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
@@ -27,25 +29,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Large screen devices (such as tablets) are supported by replacing the ListView
- * with a GridView.
- * <p/>
- * interface.
- */
 public class ReportNewsFragment extends Fragment {
 
     private static String APP_ID = "61d787a9";
     private static String KEY = "jADjas9PXU";
-    private AbsListView mListView;
-    private ListAdapter mAdapter;
     private AsyncConnect connect;
     private AsyncJSON connectJSON;
-    private JsonObject jsonObject;
-    private JsonArray jsonArray;
     private JsonElement jsonElement;
     private String jsonString;
     private String randomString = "";
@@ -75,8 +64,6 @@ public class ReportNewsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.d("onAttach", "Working");
-//        this.myActivity = (MyActivity) activity;
     }
 
     @Override

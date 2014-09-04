@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.ripzery.traffisible.Fragment.ReportNewsFragment;
+
 
 public class MyActivity extends FragmentActivity {
 

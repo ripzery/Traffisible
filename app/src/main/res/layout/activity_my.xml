@@ -5,25 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".MyActivity">
 
-    <!--<fragment-->
-    <!--android:id="@+id/fragment_Traffic_News"-->
-    <!--android:name="com.example.ripzery.traffisible.ReportNewsFragment"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent" />-->
     <FrameLayout
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </FrameLayout>
-
-    <!--<com.nhaarman.listviewanimations.itemmanipulation.DynamicListView-->
-    <!--android:id="@+id/dynamiclistview"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_margin="10dp"-->
-    <!--android:divider="@android:color/transparent"-->
-    <!--android:dividerHeight="20dp" />-->
 
     <ListView
         android:id="@+id/left_drawer"

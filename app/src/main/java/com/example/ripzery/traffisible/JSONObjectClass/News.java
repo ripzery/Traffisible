@@ -1,8 +1,5 @@
-package com.example.ripzery.traffisible;
+package com.example.ripzery.traffisible.JSONObjectClass;
 
-/**
- * Created by visit on 8/31/14 AD.
- */
 public class News {
     private String id;
     private String type;
@@ -15,6 +12,7 @@ public class News {
 
     public News(String id, String type, String primarysource, String secondarysource, String starttime, String endtime, String title, String description) {
         this.id = id;
+        this.type = type;
         this.primarysource = primarysource;
         this.secondarysource = secondarysource;
         this.starttime = starttime;

@@ -1,8 +1,9 @@
-package com.example.ripzery.traffisible;
+package com.example.ripzery.traffisible.AsyncTask;
 
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.example.ripzery.traffisible.MyActivity;
 import com.google.gson.stream.MalformedJsonException;
 
 import org.apache.http.HttpResponse;
