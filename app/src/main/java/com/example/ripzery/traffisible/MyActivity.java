@@ -71,6 +71,17 @@ public class MyActivity extends FragmentActivity {
             News.Location.Road road = location.getRoad();
             News.Location.StartPoint startPoint = location.getStartPoint();
             News.Location.EndPoint endPoint = location.getEndPoint();
+
+            bundle.putString("type", news.getType());
+            bundle.putString("title", news.getTitle());
+            bundle.putString("des", news.getDescription());
+            bundle.putString("road", road.getName());
+            bundle.putString("startpoint_name", startPoint.getName());
+            bundle.putString("startpoint_lat", startPoint.getLatitude());
+            bundle.putString("startpoint_lon", startPoint.getLongitude());
+            bundle.putString("endpoint_name", startPoint.getName());
+            bundle.putString("endpoint_lat", startPoint.getLatitude());
+            bundle.putString("endpoint_lon", startPoint.getLongitude());
         }
         mapsFragment = new MapsFragment();
         mapsFragment.setArguments(bundle);

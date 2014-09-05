@@ -74,6 +74,8 @@ public class MapsFragment extends Fragment {
 
 
                 mMap.addMarker(marker);
+
+
             }
         });
         return view;
