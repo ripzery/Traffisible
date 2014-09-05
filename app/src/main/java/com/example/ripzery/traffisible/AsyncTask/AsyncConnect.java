@@ -2,6 +2,8 @@ package com.example.ripzery.traffisible.AsyncTask;
 
 import android.os.AsyncTask;
 
+import com.example.ripzery.traffisible.MyActivity;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.BufferedHttpEntity;
@@ -18,9 +20,17 @@ import java.net.MalformedURLException;
 public class AsyncConnect extends AsyncTask<String, String, String> {
 
     private static String APP_ID = "61d787a9";
-
-
+    private final MyActivity myActivity;
     private String getRandomStringURL = "", line;
+
+    public AsyncConnect(MyActivity myActivity) {
+        this.myActivity = myActivity;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
 
     @Override
     protected String doInBackground(String... strings) {
@@ -43,5 +53,11 @@ public class AsyncConnect extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
         return getRandomStringURL;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+
     }
 }

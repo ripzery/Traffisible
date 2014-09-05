@@ -27,6 +27,11 @@ public class AsyncJSON extends AsyncTask<String, String, String> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
     protected String doInBackground(String... strings) {
 
         DefaultHttpClient client = new DefaultHttpClient();
@@ -50,5 +55,10 @@ public class AsyncJSON extends AsyncTask<String, String, String> {
         }
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
     }
 }

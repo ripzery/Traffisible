@@ -1,6 +1,7 @@
 package com.example.ripzery.traffisible.Fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.example.ripzery.traffisible.AsyncTask.AsyncConnect;
 import com.example.ripzery.traffisible.AsyncTask.AsyncJSON;
@@ -43,6 +45,8 @@ public class ReportNewsFragment extends Fragment {
     private ArrayList<News> listNews;
     private MyActivity myActivity;
     private View mRootView;
+    private DynamicListView listView;
+    private ProgressDialog progress;
 
     public ReportNewsFragment() {
 
@@ -63,7 +67,9 @@ public class ReportNewsFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
+
         super.onAttach(activity);
+        myActivity = (MyActivity) activity;
     }
 
     @Override
@@ -76,9 +82,13 @@ public class ReportNewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_traffic_news, container, false);
-        this.mRootView = view;
-        this.myActivity = (MyActivity) getActivity();
-        loadContent();
+        if (savedInstanceState == null) {
+            this.mRootView = view;
+            this.myActivity = (MyActivity) getActivity();
+            loadContent();
+            Log.d("Saved", "null");
+        }
+
         return view;
     }
 
@@ -91,12 +101,12 @@ public class ReportNewsFragment extends Fragment {
             jsonString = connectJSON.execute().get();
             Log.d("TADA", url);
             Gson gson = new Gson();
+
             JsonParser jsonParser = new JsonParser();
             jsonElement = jsonParser.parse(jsonString);
             jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
 
             News[] news = gson.fromJson(jsonElement, News[].class);
-
             Log.d("News Size", "" + news.length);
 
             listNews = new ArrayList<News>();
@@ -104,11 +114,9 @@ public class ReportNewsFragment extends Fragment {
                 listNews.add(temp);
             }
 
-
-            final DynamicListView listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
+            listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
             final CardAdapter adapter = new CardAdapter(myActivity, listNews);
             listView.setAdapter(adapter);
-
 
             TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, myActivity,
                     new OnDismissCallback() {
@@ -123,6 +131,13 @@ public class ReportNewsFragment extends Fragment {
             timedUndoAdapter.setAbsListView(listView);
             listView.setAdapter(timedUndoAdapter);
             listView.enableSimpleSwipeUndo();
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    myActivity.openMap(listNews, view, i);
+                }
+            });
 
 
         } catch (JsonSyntaxException e) {
@@ -145,7 +160,7 @@ public class ReportNewsFragment extends Fragment {
     }
 
     public String getRandomString() {
-        connect = new AsyncConnect();
+        connect = new AsyncConnect(myActivity);
         try {
             return connect.execute().get();
         } catch (InterruptedException e) {
