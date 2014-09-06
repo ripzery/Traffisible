@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.ripzery.traffisible.Fragment.CCTVFragment;
 import com.example.ripzery.traffisible.Fragment.MapsFragment;
 import com.example.ripzery.traffisible.Fragment.ReportNewsFragment;
 import com.example.ripzery.traffisible.JSONObjectClass.News;
@@ -27,13 +28,14 @@ import java.util.ArrayList;
 
 public class MyActivity extends FragmentActivity {
 
-    private Fragment reportFrag;
+    private Fragment reportFrag, cctvFrag;
     private MapsFragment mapsFragment;
     private ActionBarDrawerToggle mDrawerToggle;
     private String[] mDrawerString;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ActionBar mActionBar;
+    private Fragment newFragment, oldFragment;
     private TextView mActionTitle;
     private int actionBarTitleId;
 
@@ -61,7 +63,7 @@ public class MyActivity extends FragmentActivity {
 
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerString));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
+//        mDrawerList.setItemChecked(0,true);
         mDrawerToggle = new ActionBarDrawerToggle(this,
                 mDrawerLayout,
                 R.drawable.ic_drawer,
@@ -79,17 +81,7 @@ public class MyActivity extends FragmentActivity {
             }
         };
         mDrawerToggle.setDrawerIndicatorEnabled(true);
-
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-//        if (savedInstanceState == null) {
-        reportFrag = new ReportNewsFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.content_layout, reportFrag);
-//            transaction.addToBackStack("news");
-        transaction.commit();
-//        }
-
 
     }
 
@@ -120,9 +112,9 @@ public class MyActivity extends FragmentActivity {
             bundle.putString("startpoint_name", startPoint.getName());
             bundle.putString("startpoint_lat", startPoint.getLatitude());
             bundle.putString("startpoint_lon", startPoint.getLongitude());
-            bundle.putString("endpoint_name", startPoint.getName());
-            bundle.putString("endpoint_lat", startPoint.getLatitude());
-            bundle.putString("endpoint_lon", startPoint.getLongitude());
+            bundle.putString("endpoint_name", endPoint.getName());
+            bundle.putString("endpoint_lat", endPoint.getLatitude());
+            bundle.putString("endpoint_lon", endPoint.getLongitude());
         }
         mapsFragment = new MapsFragment();
         mapsFragment.setArguments(bundle);
@@ -165,19 +157,26 @@ public class MyActivity extends FragmentActivity {
     }
 
     private void selectItem(int position) {
-        // update the main content by replacing fragments
-//        Fragment fragment = new PlanetFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-//        fragment.setArguments(args);
-//
-//        FragmentManager fragmentManager = getFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-//
-//        // update selected item and title, then close the drawer
-//        mDrawerList.setItemChecked(position, true);
-//        setTitle(mPlanetTitles[position]);
-//        mDrawerLayout.closeDrawer(mDrawerList);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        oldFragment = newFragment;
+        mDrawerList.setItemChecked(position, true);
+        mDrawerLayout.closeDrawer(mDrawerList);
+        switch (position) {
+            case 0:
+                newFragment = reportFrag = reportFrag == null ? new ReportNewsFragment() : reportFrag;
+                break;
+            case 1:
+                newFragment = cctvFrag = cctvFrag == null ? new CCTVFragment() : cctvFrag;
+                break;
+        }
+        if (newFragment.isAdded()) {
+            transaction.hide(oldFragment);
+            transaction.show(newFragment);
+        } else {
+            transaction.add(R.id.content_layout, newFragment);
+        }
+        transaction.commit();
     }
 
     @Override

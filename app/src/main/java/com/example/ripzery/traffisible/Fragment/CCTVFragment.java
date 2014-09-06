@@ -1,9 +1,9 @@
 package com.example.ripzery.traffisible.Fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +13,12 @@ import com.example.ripzery.traffisible.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CCTVImage.OnFragmentInteractionListener} interface
+ * {@link CCTVFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CCTVImage#newInstance} factory method to
+ * Use the {@link CCTVFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CCTVImage extends Fragment {
+public class CCTVFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +30,7 @@ public class CCTVImage extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public CCTVImage() {
+    public CCTVFragment() {
         // Required empty public constructor
     }
 
@@ -43,8 +43,8 @@ public class CCTVImage extends Fragment {
      * @return A new instance of fragment CCTVImage.
      */
     // TODO: Rename and change types and number of parameters
-    public static CCTVImage newInstance(String param1, String param2) {
-        CCTVImage fragment = new CCTVImage();
+    public static CCTVFragment newInstance(String param1, String param2) {
+        CCTVFragment fragment = new CCTVFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -78,12 +78,7 @@ public class CCTVImage extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+
     }
 
     @Override
