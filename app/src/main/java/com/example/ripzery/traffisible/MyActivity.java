@@ -68,18 +68,7 @@ public class MyActivity extends FragmentActivity {
                 mDrawerLayout,
                 R.drawable.ic_drawer,
                 R.string.drawer_open,
-                R.string.drawer_close) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-        };
+                R.string.drawer_close);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
@@ -156,12 +145,14 @@ public class MyActivity extends FragmentActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    private void selectItem(int position) {
+    private void selectItem(final int position) {
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out);
         oldFragment = newFragment;
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);
+
         switch (position) {
             case 0:
                 newFragment = reportFrag = reportFrag == null ? new ReportNewsFragment() : reportFrag;
@@ -169,14 +160,47 @@ public class MyActivity extends FragmentActivity {
             case 1:
                 newFragment = cctvFrag = cctvFrag == null ? new CCTVFragment() : cctvFrag;
                 break;
+            case 3:
+                int pid = android.os.Process.myPid();
+                android.os.Process.killProcess(pid);
+                break;
         }
-        if (newFragment.isAdded()) {
-            transaction.hide(oldFragment);
-            transaction.show(newFragment);
-        } else {
-            transaction.add(R.id.content_layout, newFragment);
+        if (position < 2) {
+            if (newFragment.isAdded()) {
+                transaction.hide(oldFragment);
+                transaction.show(newFragment);
+                transaction.commit();
+            } else if (position == 1) {
+                transaction.add(R.id.content_layout, newFragment);
+                transaction.commit();
+            }
         }
-        transaction.commit();
+
+        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View view, float v) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View view) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View view) {
+                if (!newFragment.isAdded() && position == 0) {
+                    transaction.add(R.id.content_layout, newFragment);
+                    transaction.commit();
+                }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int i) {
+
+            }
+        });
+
     }
 
     @Override

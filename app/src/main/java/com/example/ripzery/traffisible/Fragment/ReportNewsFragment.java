@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.TimedUndoAdapter;
@@ -116,6 +117,8 @@ public class ReportNewsFragment extends Fragment {
 
             listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
             final CardAdapter adapter = new CardAdapter(myActivity, listNews);
+            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+            animationAdapter.setAbsListView(listView);
             listView.setAdapter(adapter);
 
             TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, myActivity,
@@ -135,7 +138,7 @@ public class ReportNewsFragment extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                    myActivity.openMap(listNews, view, i);
+                    myActivity.openMap(listNews, view, i);
                 }
             });
 
