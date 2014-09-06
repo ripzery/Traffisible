@@ -1,8 +1,15 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="Theme.Traffisible" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Traffisible</item>
+    </style>
+
+    <style name="ActionBar.Solid.Traffisible" parent="Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:background">@color/action_bar_panel</item>
+        <item name="android:icon">@android:color/transparent</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_drawer</item>
     </style>
 
 </resources>

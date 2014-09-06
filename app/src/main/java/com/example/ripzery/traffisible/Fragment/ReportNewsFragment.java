@@ -135,7 +135,7 @@ public class ReportNewsFragment extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    myActivity.openMap(listNews, view, i);
+//                    myActivity.openMap(listNews, view, i);
                 }
             });
 

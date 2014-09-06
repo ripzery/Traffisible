@@ -86,7 +86,14 @@ public class CardAdapter extends BaseAdapter implements UndoAdapter {
             holder.icon.setText("{fa-gavel}");
         } else if (s.equals("จราจรติดขัด") || s.equals("จราจรชะลอตัว")) {
             holder.icon.setText("{fa-car}");
+        } else if (s.equals("ฝนตก")) {
+            holder.icon.setText("{fa-umbrella}");
+        } else if (s.equals("ปิด")) {
+            holder.icon.setText("{fa-ban}");
+        } else {
+            holder.icon.setText("{fa-ellipsis-v}");
         }
+
         s = news.getDescription();
         holder.tvDes.setText(s.replace("\n", "").replace(" ", ""));
         holder.tvDes.setTypeface(tfMedium);

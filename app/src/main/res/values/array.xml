@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="drawer_array">
+        <item>Incident News</item>
+        <item>CCTV Image</item>
+        <item>Preference</item>
+        <item>Exit</item>
+    </string-array>
+</resources>

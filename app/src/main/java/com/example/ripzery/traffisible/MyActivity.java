@@ -1,15 +1,21 @@
 package com.example.ripzery.traffisible;
 
 import android.app.ActionBar;
-import android.content.res.Resources;
-import android.graphics.Color;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ripzery.traffisible.Fragment.MapsFragment;
@@ -23,11 +29,58 @@ public class MyActivity extends FragmentActivity {
 
     private Fragment reportFrag;
     private MapsFragment mapsFragment;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private String[] mDrawerString;
+    private ListView mDrawerList;
+    private DrawerLayout mDrawerLayout;
+    private ActionBar mActionBar;
+    private TextView mActionTitle;
+    private int actionBarTitleId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+
+        mActionBar = getActionBar();
+
+        SpannableString mStringTitle = new SpannableString(" TRAFFISIBLE");
+        SpannableString mStringSubTitle = new SpannableString("    รายงานข่าวจราจร - ล่าสุด");
+        mStringTitle.setSpan(new TypefaceSpan(this, "Roboto-Medium.ttf"), 0, mStringTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mStringSubTitle.setSpan(new TypefaceSpan(this, "Roboto-Light.ttf"), 0, mStringTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mActionBar.setTitle(mStringTitle);
+        mActionBar.setSubtitle(mStringSubTitle);
+        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mDrawerString = getResources().getStringArray(R.array.drawer_array);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerString));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        mDrawerToggle = new ActionBarDrawerToggle(this,
+                mDrawerLayout,
+                R.drawable.ic_drawer,
+                R.string.drawer_open,
+                R.string.drawer_close) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 //        if (savedInstanceState == null) {
         reportFrag = new ReportNewsFragment();
@@ -37,18 +90,6 @@ public class MyActivity extends FragmentActivity {
         transaction.commit();
 //        }
 
-
-        int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-        if (actionBarTitleId > 0) {
-            TextView title = (TextView) findViewById(actionBarTitleId);
-            if (title != null) {
-                title.setTextColor(Color.WHITE);
-            }
-        }
-        ActionBar bar = getActionBar();
-        bar.setCustomView(R.layout.actionbar_view);
-        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
-                | ActionBar.DISPLAY_SHOW_HOME);
 
     }
 
@@ -103,7 +144,51 @@ public class MyActivity extends FragmentActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private void selectItem(int position) {
+        // update the main content by replacing fragments
+//        Fragment fragment = new PlanetFragment();
+//        Bundle args = new Bundle();
+//        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+//        fragment.setArguments(args);
+//
+//        FragmentManager fragmentManager = getFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+//
+//        // update selected item and title, then close the drawer
+//        mDrawerList.setItemChecked(position, true);
+//        setTitle(mPlanetTitles[position]);
+//        mDrawerLayout.closeDrawer(mDrawerList);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mActionBar.setTitle(title);
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
 }
