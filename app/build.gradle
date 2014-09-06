@@ -33,5 +33,6 @@ dependencies {
     compile 'com.joanzapata.android:android-iconify:1.0.6'
     compile 'com.google.android.gms:play-services:5.0.89'
     compile 'com.loopj.android:android-async-http:1.4.5'
+    compile 'com.jpardogo.googleprogressbar:library:+'
 }
 

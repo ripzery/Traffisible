@@ -2,6 +2,7 @@ package com.example.ripzery.traffisible.Fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 
 import com.example.ripzery.traffisible.CardAdapter;
 import com.example.ripzery.traffisible.JSONObjectClass.News;
@@ -18,6 +20,7 @@ import com.example.ripzery.traffisible.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
@@ -92,65 +95,89 @@ public class ReportNewsFragment extends Fragment {
     }
 
     public void loadContent() {
+        final MediaPlayer mediaPlayer = MediaPlayer.create(myActivity, R.raw.mimimi);
+        final DynamicListView dynamicListView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
+        mediaPlayer.seekTo(5500);
+        mediaPlayer.setVolume((float) 0.5, (float) 0.5);
+        mediaPlayer.start();
+
+        final ProgressBar mProgressBar = (ProgressBar) myActivity.findViewById(R.id.google_progress);
+//        mProgressBar.setIndeterminateDrawable(new FoldingCirclesDrawable.Builder(myActivity)
+//                .build());
+        mProgressBar.setVisibility(View.VISIBLE);
         final AsyncHttpClient client = new AsyncHttpClient();
+
         client.get("http://api.traffy.in.th/apis/getKey.php?appid=" + APP_ID, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
                 String randomString = new String(responseBody);
                 passKey = md5(APP_ID + randomString) + md5(KEY + randomString);
                 url = getURL("getIncident", "JSON", APP_ID);
                 client.get(url, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        mediaPlayer.stop();
+                        mProgressBar.setVisibility(View.GONE);
+
                         jsonString = new String(responseBody);
                         Log.d("URL :", url);
                         Gson gson = new Gson();
 
                         JsonParser jsonParser = new JsonParser();
-                        jsonElement = jsonParser.parse(jsonString);
-                        jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
+                        try {
+                            jsonElement = jsonParser.parse(jsonString);
+                            jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
+                            News[] news = gson.fromJson(jsonElement, News[].class);
+                            Log.d("News Size", "" + news.length);
 
-                        News[] news = gson.fromJson(jsonElement, News[].class);
-                        Log.d("News Size", "" + news.length);
+                            listNews = new ArrayList<News>();
+                            for (News temp : news) {
+                                listNews.add(temp);
+                            }
 
-                        listNews = new ArrayList<News>();
-                        for (News temp : news) {
-                            listNews.add(temp);
+                            listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
+                            final CardAdapter adapter = new CardAdapter(myActivity, listNews);
+                            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+                            animationAdapter.setAbsListView(listView);
+                            listView.setAdapter(adapter);
+
+                            TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, myActivity,
+                                    new OnDismissCallback() {
+                                        @Override
+                                        public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
+                                            for (int position : ints) {
+                                                listNews.remove(position);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        }
+                                    });
+                            timedUndoAdapter.setAbsListView(listView);
+                            listView.setAdapter(timedUndoAdapter);
+                            listView.enableSimpleSwipeUndo();
+
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    myActivity.openMap(listNews, view, i);
+                                }
+                            });
+                            dynamicListView.setVisibility(View.VISIBLE);
+                        } catch (JsonSyntaxException e) {
+                            loadContent();
+                        } catch (NullPointerException e) {
+                            loadContent();
                         }
 
-                        listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
-                        final CardAdapter adapter = new CardAdapter(myActivity, listNews);
-                        AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
-                        animationAdapter.setAbsListView(listView);
-                        listView.setAdapter(adapter);
 
-                        TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, myActivity,
-                                new OnDismissCallback() {
-                                    @Override
-                                    public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
-                                        for (int position : ints) {
-                                            listNews.remove(position);
-                                            adapter.notifyDataSetChanged();
-                                        }
-                                    }
-                                });
-                        timedUndoAdapter.setAbsListView(listView);
-                        listView.setAdapter(timedUndoAdapter);
-                        listView.enableSimpleSwipeUndo();
-
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                myActivity.openMap(listNews, view, i);
-                            }
-                        });
                     }
 
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-                        }
-                    });
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                    }
+                });
             }
 
             @Override
@@ -160,10 +187,6 @@ public class ReportNewsFragment extends Fragment {
         });
 
 
-    }
-
-    public String getURL(String apiType, String apiFormat) {
-        return "http://api.traffy.in.th/apis/apitraffy.php?api=" + apiType + "&key=" + passKey + "&format=" + apiFormat;
     }
 
     public String getURL(String apiType, String apiFormat, String APP_ID) {

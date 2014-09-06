@@ -6,4 +6,10 @@
         <item>Preference</item>
         <item>Exit</item>
     </string-array>
+    <string-array name="colors">
+        <item>@color/orange</item>
+        <item>@color/action_bar_panel</item>
+        <item>@color/indigo</item>
+        <item>@color/red</item>
+    </string-array>
 </resources>
