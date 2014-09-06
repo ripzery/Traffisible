@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.example.ripzery.traffisible.AsyncTask.AsyncConnect;
-import com.example.ripzery.traffisible.AsyncTask.AsyncJSON;
 import com.example.ripzery.traffisible.CardAdapter;
 import com.example.ripzery.traffisible.JSONObjectClass.News;
 import com.example.ripzery.traffisible.MyActivity;
@@ -20,24 +18,24 @@ import com.example.ripzery.traffisible.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.TimedUndoAdapter;
 
+import org.apache.http.Header;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class ReportNewsFragment extends Fragment {
 
     private static String APP_ID = "61d787a9";
     private static String KEY = "jADjas9PXU";
-    private AsyncConnect connect;
-    private AsyncJSON connectJSON;
     private JsonElement jsonElement;
     private String jsonString;
     private String randomString = "";
@@ -94,63 +92,73 @@ public class ReportNewsFragment extends Fragment {
     }
 
     public void loadContent() {
-        randomString = getRandomString();
-        passKey = md5(APP_ID + randomString) + md5(KEY + randomString);
-        url = getURL("getIncident", "JSON", APP_ID);
-        connectJSON = new AsyncJSON(myActivity, url);
-        try {
-            jsonString = connectJSON.execute().get();
-            Log.d("TADA", url);
-            Gson gson = new Gson();
+        final AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://api.traffy.in.th/apis/getKey.php?appid=" + APP_ID, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String randomString = new String(responseBody);
+                passKey = md5(APP_ID + randomString) + md5(KEY + randomString);
+                url = getURL("getIncident", "JSON", APP_ID);
+                client.get(url, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        jsonString = new String(responseBody);
+                        Log.d("URL :", url);
+                        Gson gson = new Gson();
 
-            JsonParser jsonParser = new JsonParser();
-            jsonElement = jsonParser.parse(jsonString);
-            jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
+                        JsonParser jsonParser = new JsonParser();
+                        jsonElement = jsonParser.parse(jsonString);
+                        jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
 
-            News[] news = gson.fromJson(jsonElement, News[].class);
-            Log.d("News Size", "" + news.length);
+                        News[] news = gson.fromJson(jsonElement, News[].class);
+                        Log.d("News Size", "" + news.length);
 
-            listNews = new ArrayList<News>();
-            for (News temp : news) {
-                listNews.add(temp);
-            }
+                        listNews = new ArrayList<News>();
+                        for (News temp : news) {
+                            listNews.add(temp);
+                        }
 
-            listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
-            final CardAdapter adapter = new CardAdapter(myActivity, listNews);
-            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
-            animationAdapter.setAbsListView(listView);
-            listView.setAdapter(adapter);
+                        listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
+                        final CardAdapter adapter = new CardAdapter(myActivity, listNews);
+                        AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+                        animationAdapter.setAbsListView(listView);
+                        listView.setAdapter(adapter);
 
-            TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, myActivity,
-                    new OnDismissCallback() {
-                        @Override
-                        public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
-                            for (int position : ints) {
-                                listNews.remove(position);
-                                adapter.notifyDataSetChanged();
+                        TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, myActivity,
+                                new OnDismissCallback() {
+                                    @Override
+                                    public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
+                                        for (int position : ints) {
+                                            listNews.remove(position);
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                });
+                        timedUndoAdapter.setAbsListView(listView);
+                        listView.setAdapter(timedUndoAdapter);
+                        listView.enableSimpleSwipeUndo();
+
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                myActivity.openMap(listNews, view, i);
                             }
+                        });
+                    }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
                         }
                     });
-            timedUndoAdapter.setAbsListView(listView);
-            listView.setAdapter(timedUndoAdapter);
-            listView.enableSimpleSwipeUndo();
+            }
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    myActivity.openMap(listNews, view, i);
-                }
-            });
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("Response", "Failure");
+            }
+        });
 
-
-        } catch (JsonSyntaxException e) {
-            loadContent();
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -162,15 +170,4 @@ public class ReportNewsFragment extends Fragment {
         return "http://api.traffy.in.th/apis/apitraffy.php?api=" + apiType + "&key=" + passKey + "&format=" + apiFormat + "&appid=" + APP_ID;
     }
 
-    public String getRandomString() {
-        connect = new AsyncConnect(myActivity);
-        try {
-            return connect.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

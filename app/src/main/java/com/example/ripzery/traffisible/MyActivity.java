@@ -169,38 +169,11 @@ public class MyActivity extends FragmentActivity {
             if (newFragment.isAdded()) {
                 transaction.hide(oldFragment);
                 transaction.show(newFragment);
-                transaction.commit();
-            } else if (position == 1) {
+            } else {
                 transaction.add(R.id.content_layout, newFragment);
-                transaction.commit();
             }
+            transaction.commit();
         }
-
-        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(View view, float v) {
-
-            }
-
-            @Override
-            public void onDrawerOpened(View view) {
-
-            }
-
-            @Override
-            public void onDrawerClosed(View view) {
-                if (!newFragment.isAdded() && position == 0) {
-                    transaction.add(R.id.content_layout, newFragment);
-                    transaction.commit();
-                }
-            }
-
-            @Override
-            public void onDrawerStateChanged(int i) {
-
-            }
-        });
-
     }
 
     @Override
