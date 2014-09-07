@@ -27,7 +27,6 @@ import com.example.ripzery.traffisible.Fragment.MapsFragment;
 import com.example.ripzery.traffisible.Fragment.ReportNewsFragment;
 import com.example.ripzery.traffisible.JSONObjectClass.CCTV;
 import com.example.ripzery.traffisible.JSONObjectClass.News;
-import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 import com.loopj.android.http.AsyncHttpClient;
@@ -55,6 +54,7 @@ public class MyActivity extends FragmentActivity {
     private ActionBar mActionBar;
     private Fragment newFragment, oldFragment;
     private String passKey = "";
+    private ShowcaseView builder, builder2;
 
     public static String md5(String s) {
         MessageDigest digest;
@@ -93,31 +93,26 @@ public class MyActivity extends FragmentActivity {
                 mDrawerLayout,
                 R.drawable.ic_drawer,
                 R.string.drawer_open,
-                R.string.drawer_close);
+                R.string.drawer_close) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
+        builder =
         new ShowcaseView.Builder(this)
                 .setTarget(new ActionViewTarget(this, ActionViewTarget.Type.HOME))
                 .setContentTitle("Navigation Drawer")
+                .setStyle(R.style.CustomShowcaseTheme2)
                 .setContentText("You can click here to show menus of content.")
                 .hideOnTouchOutside()
-                .setShowcaseEventListener(new OnShowcaseEventListener() {
-                    @Override
-                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-
-                    }
-
-                    @Override
-                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-                    }
-
-                    @Override
-                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
-                    }
-                })
                 .build();
 
         if (!isPassKeySet())
@@ -215,6 +210,18 @@ public class MyActivity extends FragmentActivity {
     }
 
     private void selectItem(final int position) {
+
+//        if(builder2 == null && position == 0){
+//            ViewTarget viewTarget = new ViewTarget(mDrawerList.getChildAt(0).getId(),this);
+//            builder2 = new ShowcaseView.Builder(this)
+//                    .setTarget(viewTarget)
+//                    .setContentTitle("Incident News Feed")
+//                    .setContentText("Get fresh incident news here by most recently updated")
+//                    .hideOnTouchOutside()
+//                    .build();
+//        }
+//
+//
 
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out);
