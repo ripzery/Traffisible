@@ -24,7 +24,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.example.ripzery.traffisible" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84f650ff-1719-41ff-9b4a-9011fd3905bf" name="Default" comment="แก้ให้ร้องขอ api passkey ในตอนเริ่ม application แค่ครั้งเดียว จากนั้นส่ง key ไปให้ทุกๆหน้าที่ใช้ key โดยใช้ bundle">
+    <list default="true" id="84f650ff-1719-41ff-9b4a-9011fd3905bf" name="Default" comment="catch JsonMalformedException">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/MyActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/MyActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/Fragment/ReportNewsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/Fragment/ReportNewsFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -54,14 +54,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MyActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="MyActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/MyActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3518" max-vertical-offset="4305">
-              <caret line="266" column="54" selection-start-line="266" selection-start-column="54" selection-end-line="266" selection-end-column="54" />
+            <state vertical-scroll-proportion="0.6851574" vertical-offset="3653" max-vertical-offset="4470">
+              <caret line="277" column="21" selection-start-line="277" selection-start-column="21" selection-end-line="277" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#3780#3800#0" expanded="true" />
+                <element signature="e#3818#3839#0" expanded="true" />
                 <element signature="method#onCreateOptionsMenu#0;class#MyActivity#0" expanded="false" />
+                <element signature="e#11055#11056#0" expanded="true" />
+                <element signature="e#11115#11116#0" expanded="true" />
                 <element signature="method#isPassKeySet#0;class#MyActivity#0" expanded="false" />
               </folding>
             </state>
@@ -82,19 +86,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ReportNewsFragment.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ReportNewsFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/Fragment/ReportNewsFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7301349" vertical-offset="2183" max-vertical-offset="3030">
-              <caret line="178" column="17" selection-start-line="178" selection-start-column="17" selection-end-line="178" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2333" max-vertical-offset="3000">
+              <caret line="165" column="20" selection-start-line="165" selection-start-column="20" selection-end-line="175" selection-end-column="30" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5491#5970#0" expanded="true" />
-                <element signature="e#5939#5940#0" expanded="true" />
-                <element signature="e#6202#6504#0" expanded="true" />
-                <element signature="e#6481#6482#0" expanded="true" />
-                <element signature="e#7076#7077#0" expanded="true" />
-                <element signature="e#7144#7145#0" expanded="true" />
+                <element signature="e#5457#5936#0" expanded="true" />
+                <element signature="e#5905#5906#0" expanded="true" />
+                <element signature="e#6168#6470#0" expanded="true" />
+                <element signature="e#6447#6448#0" expanded="true" />
+                <element signature="e#7057#7058#0" expanded="true" />
+                <element signature="e#7126#7127#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1478,8 +1482,8 @@
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_cctvimage.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/Fragment/CCTVFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/MyActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/Fragment/ReportNewsFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/MyActivity.java" />
       </list>
     </option>
   </component>
@@ -2125,7 +2129,11 @@
       <created>1410062002281</created>
       <updated>1410062002281</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="catch JsonMalformedException">
+      <created>1410063721436</created>
+      <updated>1410063721436</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2145,7 +2153,7 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294964" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.3294964" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" x="2063" y="22" width="1213" height="975" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.3294964" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" x="2063" y="22" width="1213" height="975" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2191,7 +2199,8 @@
     <MESSAGE value="Using AsyncHttpClient Library to do AsyncTask" />
     <MESSAGE value="Add Google Progress Bar&#10;Add Progress Music" />
     <MESSAGE value="แก้ให้ร้องขอ api passkey ในตอนเริ่ม application แค่ครั้งเดียว จากนั้นส่ง key ไปให้ทุกๆหน้าที่ใช้ key โดยใช้ bundle" />
-    <option name="LAST_COMMIT_MESSAGE" value="แก้ให้ร้องขอ api passkey ในตอนเริ่ม application แค่ครั้งเดียว จากนั้นส่ง key ไปให้ทุกๆหน้าที่ใช้ key โดยใช้ bundle" />
+    <MESSAGE value="catch JsonMalformedException" />
+    <option name="LAST_COMMIT_MESSAGE" value="catch JsonMalformedException" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -2208,7 +2217,11 @@
           <caret line="99" column="0" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#3780#3800#0" expanded="true" />
+            <element signature="e#3818#3839#0" expanded="true" />
             <element signature="method#onCreateOptionsMenu#0;class#MyActivity#0" expanded="false" />
+            <element signature="e#11055#11056#0" expanded="true" />
+            <element signature="e#11115#11116#0" expanded="true" />
             <element signature="method#isPassKeySet#0;class#MyActivity#0" expanded="false" />
           </folding>
         </state>
@@ -2239,12 +2252,12 @@
           <caret line="89" column="29" selection-start-line="89" selection-start-column="29" selection-end-line="89" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5491#5970#0" expanded="true" />
-            <element signature="e#5939#5940#0" expanded="true" />
-            <element signature="e#6202#6504#0" expanded="true" />
-            <element signature="e#6481#6482#0" expanded="true" />
-            <element signature="e#7076#7077#0" expanded="true" />
-            <element signature="e#7144#7145#0" expanded="true" />
+            <element signature="e#5457#5936#0" expanded="true" />
+            <element signature="e#5905#5906#0" expanded="true" />
+            <element signature="e#6168#6470#0" expanded="true" />
+            <element signature="e#6447#6448#0" expanded="true" />
+            <element signature="e#7057#7058#0" expanded="true" />
+            <element signature="e#7126#7127#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2292,7 +2305,11 @@
           <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#3780#3800#0" expanded="true" />
+            <element signature="e#3818#3839#0" expanded="true" />
             <element signature="method#onCreateOptionsMenu#0;class#MyActivity#0" expanded="false" />
+            <element signature="e#11055#11056#0" expanded="true" />
+            <element signature="e#11115#11116#0" expanded="true" />
             <element signature="method#isPassKeySet#0;class#MyActivity#0" expanded="false" />
           </folding>
         </state>
@@ -2603,18 +2620,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/MyActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3518" max-vertical-offset="4305">
-          <caret line="266" column="54" selection-start-line="266" selection-start-column="54" selection-end-line="266" selection-end-column="54" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#onCreateOptionsMenu#0;class#MyActivity#0" expanded="false" />
-            <element signature="method#isPassKeySet#0;class#MyActivity#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_my.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-8.148149" vertical-offset="5" max-vertical-offset="645">
@@ -2640,16 +2645,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/Fragment/ReportNewsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7301349" vertical-offset="2183" max-vertical-offset="3030">
-          <caret line="178" column="17" selection-start-line="178" selection-start-column="17" selection-end-line="178" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2333" max-vertical-offset="3000">
+          <caret line="165" column="20" selection-start-line="165" selection-start-column="20" selection-end-line="175" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5491#5970#0" expanded="true" />
-            <element signature="e#5939#5940#0" expanded="true" />
-            <element signature="e#6202#6504#0" expanded="true" />
-            <element signature="e#6481#6482#0" expanded="true" />
-            <element signature="e#7076#7077#0" expanded="true" />
-            <element signature="e#7144#7145#0" expanded="true" />
+            <element signature="e#5457#5936#0" expanded="true" />
+            <element signature="e#5905#5906#0" expanded="true" />
+            <element signature="e#6168#6470#0" expanded="true" />
+            <element signature="e#6447#6448#0" expanded="true" />
+            <element signature="e#7057#7058#0" expanded="true" />
+            <element signature="e#7126#7127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/ripzery/traffisible/MyActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6851574" vertical-offset="3653" max-vertical-offset="4470">
+          <caret line="277" column="21" selection-start-line="277" selection-start-column="21" selection-end-line="277" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3780#3800#0" expanded="true" />
+            <element signature="e#3818#3839#0" expanded="true" />
+            <element signature="method#onCreateOptionsMenu#0;class#MyActivity#0" expanded="false" />
+            <element signature="e#11055#11056#0" expanded="true" />
+            <element signature="e#11115#11116#0" expanded="true" />
+            <element signature="method#isPassKeySet#0;class#MyActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>

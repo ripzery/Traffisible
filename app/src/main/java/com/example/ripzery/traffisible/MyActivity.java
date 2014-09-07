@@ -3,6 +3,7 @@ package com.example.ripzery.traffisible;
 import android.app.ActionBar;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -265,7 +266,17 @@ public class MyActivity extends FragmentActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
                 mProgressBar.setVisibility(View.GONE);
-//                setPassKey();
+                new CountDownTimer(6000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        Toast.makeText(getApplicationContext(), "Reconnect in " + millisUntilFinished / 1000, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        setPassKey();
+                    }
+                }.start();
             }
         });
     }
