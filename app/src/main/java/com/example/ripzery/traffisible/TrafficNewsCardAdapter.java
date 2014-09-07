@@ -19,12 +19,12 @@ import java.util.List;
 /**
  * Created by visit on 9/1/14 AD.
  */
-public class CardAdapter extends BaseAdapter implements UndoAdapter {
+public class TrafficNewsCardAdapter extends BaseAdapter implements UndoAdapter {
     private MyActivity myActivity;
     private LayoutInflater inflater;
     private List<News> listNews;
 
-    public CardAdapter(MyActivity context, List<News> objects) {
+    public TrafficNewsCardAdapter(MyActivity context, List<News> objects) {
         this.listNews = objects;
         this.myActivity = context;
     }
@@ -54,7 +54,7 @@ public class CardAdapter extends BaseAdapter implements UndoAdapter {
         Typeface tfLightItalic = Typeface.createFromAsset(myActivity.getAssets(), "fonts/Roboto-LightItalic.ttf");
         if (rowView == null) {
             LayoutInflater inflater = myActivity.getLayoutInflater();
-            rowView = inflater.inflate(R.layout.list_layout, null);
+            rowView = inflater.inflate(R.layout.traffic_news_cardview, null);
 
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.tvTitle = (TextView) rowView.findViewById(R.id.tvTitle);
@@ -69,7 +69,7 @@ public class CardAdapter extends BaseAdapter implements UndoAdapter {
             inflater = (LayoutInflater) myActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
         if (view == null) {
-            view = inflater.inflate(R.layout.list_layout, null);
+            view = inflater.inflate(R.layout.traffic_news_cardview, null);
 
         }
 

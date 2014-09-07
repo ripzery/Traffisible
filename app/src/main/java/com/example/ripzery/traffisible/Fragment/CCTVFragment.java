@@ -3,56 +3,50 @@ package com.example.ripzery.traffisible.Fragment;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
+import com.example.ripzery.traffisible.CCTVCardAdapter;
+import com.example.ripzery.traffisible.JSONObjectClass.CCTV;
+import com.example.ripzery.traffisible.MyActivity;
 import com.example.ripzery.traffisible.R;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.TimedUndoAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CCTVFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CCTVFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.apache.http.Header;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
+
 public class CCTVFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private String passKey = "";
+    private String passKey = "", appId = "";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private View mRootView;
+    private MyActivity myActivity;
     private OnFragmentInteractionListener mListener;
+    private ArrayList<CCTV> listCCTV = new ArrayList<CCTV>();
 
     public CCTVFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CCTVImage.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CCTVFragment newInstance(String param1, String param2) {
-        CCTVFragment fragment = new CCTVFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -60,8 +54,8 @@ public class CCTVFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             passKey = getArguments().getString("passkey");
+            appId = getArguments().getString("appid");
             Log.d("passkey", passKey);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -76,6 +70,66 @@ public class CCTVFragment extends Fragment {
 
     public void loadContent() {
         AsyncHttpClient client = new AsyncHttpClient();
+        String url = getURL();
+        Log.d("URL", url);
+        client.get(url, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String json = new String(responseBody);
+                Gson gson = new Gson();
+                JsonParser parser = new JsonParser();
+                try {
+                    JsonElement jsonElement = parser.parse(json);
+                    JsonObject jsonObject = jsonElement.getAsJsonArray().get(0).getAsJsonObject();
+                    Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
+
+                    for (Map.Entry<String, JsonElement> entry : entrySet) {
+                        jsonElement = jsonObject.get(entry.getKey());
+                        listCCTV.add(gson.fromJson(jsonElement, CCTV.class));
+                    }
+
+                    DynamicListView listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview2);
+                    final CCTVCardAdapter adapter = new CCTVCardAdapter(myActivity, listCCTV);
+                    AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+                    animationAdapter.setAbsListView(listView);
+                    listView.setAdapter(adapter);
+
+                    TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, myActivity,
+                            new OnDismissCallback() {
+                                @Override
+                                public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
+                                    for (int position : ints) {
+                                        listCCTV.remove(position);
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
+                            });
+                    timedUndoAdapter.setAbsListView(listView);
+                    listView.setAdapter(timedUndoAdapter);
+                    listView.enableSimpleSwipeUndo();
+
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                        }
+                    });
+
+
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
+    public String getURL() {
+        return "http://api.traffy.in.th/apis/apitraffy.php?format=JSON&api=getCCTV&available=t&key=" + passKey + "&appid=" + appId;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -88,6 +142,7 @@ public class CCTVFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        myActivity = (MyActivity) activity;
 
     }
 

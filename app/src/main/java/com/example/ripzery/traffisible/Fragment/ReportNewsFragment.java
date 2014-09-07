@@ -14,10 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.ripzery.traffisible.CardAdapter;
 import com.example.ripzery.traffisible.JSONObjectClass.News;
 import com.example.ripzery.traffisible.MyActivity;
 import com.example.ripzery.traffisible.R;
+import com.example.ripzery.traffisible.TrafficNewsCardAdapter;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -116,15 +116,10 @@ public class ReportNewsFragment extends Fragment {
                 jsonString = new String(responseBody);
                 Log.d("URL :", url);
                 Gson gson = new Gson();
-
                 JsonParser jsonParser = new JsonParser();
                 try {
                     jsonElement = jsonParser.parse(jsonString);
-                    if (jsonElement.isJsonObject()) {
-                        jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
-                    } else {
-//                        loadContent();
-                    }
+                    jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
 
                     News[] news = gson.fromJson(jsonElement, News[].class);
                     Log.d("News Size", "" + news.length);
@@ -135,7 +130,7 @@ public class ReportNewsFragment extends Fragment {
                     }
 
                     listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
-                    final CardAdapter adapter = new CardAdapter(myActivity, listNews);
+                    final TrafficNewsCardAdapter adapter = new TrafficNewsCardAdapter(myActivity, listNews);
                     AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
                     animationAdapter.setAbsListView(listView);
                     listView.setAdapter(adapter);
@@ -163,7 +158,8 @@ public class ReportNewsFragment extends Fragment {
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                     Toast.makeText(myActivity, "Connection failed !", Toast.LENGTH_SHORT).show();
-                    new CountDownTimer(3500, 1000) {
+                    myActivity.setPassKey();
+                    new CountDownTimer(5500, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
                             Toast.makeText(myActivity, "Reconnect in " + millisUntilFinished / 1000, Toast.LENGTH_SHORT).show();
@@ -171,6 +167,7 @@ public class ReportNewsFragment extends Fragment {
 
                         @Override
                         public void onFinish() {
+                            passKey = myActivity.getPassKey();
                             loadContent();
                         }
                     }.start();

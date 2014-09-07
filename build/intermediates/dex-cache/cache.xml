@@ -10,6 +10,10 @@
         jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/classes.jar"
         jumboMode="false" revision="20.0.0" sha1="8b3d9a7b348d8bcfb4d740dfaf70bc374cdae9d6" />
     <item
+        dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-1894510b21eccd1a0ff89e02781f61f6901d8cb1.jar"
+        jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.nhaarman.listviewanimations/lib-core/3.1.0/classes.jar"
+        jumboMode="false" revision="20.0.0" sha1="acf66033b1418ccf9e15c8e77750981e4809c4ea" />
+    <item
         dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-78022da4a64940ec23d7b7f882f13adf09896fa2.jar"
         jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.nhaarman.listviewanimations/lib-core-slh/3.1.0/classes.jar"
         jumboMode="false" revision="20.0.0" sha1="49223278ec2ede1d05d00868c5ce3e077b4016f8" />
@@ -17,6 +21,10 @@
         dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-18cc6f416acabcfdbda5dedbee2183e1faf3d621.jar"
         jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/5.0.89/classes.jar"
         jumboMode="false" revision="20.0.0" sha1="d71573c9c5ea98a8db47ad6ff993a63d492b3bfa" />
+    <item
+        dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-fced67b921d702e9c34bc7d0a9106df171d1334d.jar"
+        jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
+        jumboMode="false" revision="20.0.0" sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d" />
     <item
         dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-4dbba974e813fbd3b8fc89d780836f41ff5f437f.jar"
         jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/20.0.0/classes.jar"
@@ -26,25 +34,13 @@
         jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.nhaarman.listviewanimations/lib-manipulation/3.1.0/classes.jar"
         jumboMode="false" revision="20.0.0" sha1="5660e4bf78904137e90e62a5d4cc2e987258f02c" />
     <item
-        dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-d9c148351fc7563ef7cbd4970ea3cb9263a50b98.jar"
-        jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.daimajia.swipelayout/library/1.0.5/classes.jar"
-        jumboMode="false" revision="20.0.0" sha1="77bf9bc66a919dfc32878575a6976c049f6ef7fa" />
-    <item
-        dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/android-iconify-1.0.6-fb887a776b75c0007bbb064359b62fd9bfa27a82.jar"
-        jar="/Users/visit/.gradle/caches/modules-2/files-2.1/com.joanzapata.android/android-iconify/1.0.6/f9ee1a18c922b05fa5b48d9ff0a5ca4fccbf5b35/android-iconify-1.0.6.jar"
-        jumboMode="false" revision="20.0.0" sha1="f9ee1a18c922b05fa5b48d9ff0a5ca4fccbf5b35" />
-    <item
-        dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-1894510b21eccd1a0ff89e02781f61f6901d8cb1.jar"
-        jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.nhaarman.listviewanimations/lib-core/3.1.0/classes.jar"
-        jumboMode="false" revision="20.0.0" sha1="acf66033b1418ccf9e15c8e77750981e4809c4ea" />
-    <item
-        dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-fced67b921d702e9c34bc7d0a9106df171d1334d.jar"
-        jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
-        jumboMode="false" revision="20.0.0" sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d" />
-    <item
         dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-7d4830ca8f10048dc06d2adfaa73a4782949ab07.jar"
         jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.0-rc1/classes.jar"
         jumboMode="false" revision="20.0.0" sha1="25c58e61f70a3d78e5c5abcfc9db0555fc869b7d" />
+    <item
+        dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-d9c148351fc7563ef7cbd4970ea3cb9263a50b98.jar"
+        jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.daimajia.swipelayout/library/1.0.5/classes.jar"
+        jumboMode="false" revision="20.0.0" sha1="77bf9bc66a919dfc32878575a6976c049f6ef7fa" />
     <item
         dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/support-annotations-20.0.0-bca9cd8c8082330ef7549e0398af852faae531fd.jar"
         jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-annotations/20.0.0/support-annotations-20.0.0.jar"
@@ -61,6 +57,14 @@
         dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-7edf904186dc7fd652ae88e925439616b76c8f65.jar"
         jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.jpardogo.googleprogressbar/library/1.1.0/classes.jar"
         jumboMode="false" revision="20.0.0" sha1="f44c62d1f53c6e217b565981f84deced5343504f" />
+    <item
+        dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/universal-image-loader-1.9.3-c3c1730de3606d03775cdce47c948ac892b0ba19.jar"
+        jar="/Users/visit/.gradle/caches/modules-2/files-2.1/com.nostra13.universalimageloader/universal-image-loader/1.9.3/a85588bec3e2c4584d593d3f15df1677321bca72/universal-image-loader-1.9.3.jar"
+        jumboMode="false" revision="20.0.0" sha1="a85588bec3e2c4584d593d3f15df1677321bca72" />
+    <item
+        dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/android-iconify-1.0.6-fb887a776b75c0007bbb064359b62fd9bfa27a82.jar"
+        jar="/Users/visit/.gradle/caches/modules-2/files-2.1/com.joanzapata.android/android-iconify/1.0.6/f9ee1a18c922b05fa5b48d9ff0a5ca4fccbf5b35/android-iconify-1.0.6.jar"
+        jumboMode="false" revision="20.0.0" sha1="f9ee1a18c922b05fa5b48d9ff0a5ca4fccbf5b35" />
     <item
         dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-c6ddfa434b70fcc1a8d1b219a31b9b370e7ef0d4.jar"
         jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/classes.jar"

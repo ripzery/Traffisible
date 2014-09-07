@@ -71,13 +71,9 @@ public class MyActivity extends FragmentActivity {
         setContentView(R.layout.activity_my);
 
         mActionBar = getActionBar();
+        setTitle(" TRAFFISIBLE");
+        setSubTitle("     คลิกแถบด้านซ้ายเพื่อเลือกเมนูข่าว");
 
-        SpannableString mStringTitle = new SpannableString(" TRAFFISIBLE");
-        SpannableString mStringSubTitle = new SpannableString("    รายงานข่าวจราจร - ล่าสุด");
-        mStringTitle.setSpan(new TypefaceSpan(this, "Roboto-Medium.ttf"), 0, mStringTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mStringSubTitle.setSpan(new TypefaceSpan(this, "Roboto-Light.ttf"), 0, mStringTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mActionBar.setTitle(mStringTitle);
-        mActionBar.setSubtitle(mStringSubTitle);
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -211,6 +207,7 @@ public class MyActivity extends FragmentActivity {
 
         Bundle bundle = new Bundle();
         bundle.putString("passkey", passKey);
+        bundle.putString("appid", APP_ID);
 
         switch (position) {
             case 0:
@@ -221,6 +218,7 @@ public class MyActivity extends FragmentActivity {
                 } else {
                     newFragment = reportFrag;
                 }
+                setSubTitle("    รายงานข่าวจราจร - ล่าสุด");
                 break;
             case 1:
 
@@ -231,6 +229,7 @@ public class MyActivity extends FragmentActivity {
                 } else {
                     newFragment = cctvFrag;
                 }
+                setSubTitle("     ภาพถ่าย CCTV - ล่าสุด");
                 break;
             case 3:
                 int pid = android.os.Process.myPid();
@@ -281,6 +280,10 @@ public class MyActivity extends FragmentActivity {
         });
     }
 
+    public String getPassKey() {
+        return passKey;
+    }
+
     public boolean isPassKeySet() {
         if (passKey.equals("")) {
             return false;
@@ -289,9 +292,18 @@ public class MyActivity extends FragmentActivity {
         }
     }
 
+    public void setSubTitle(String subTitle) {
+
+        SpannableString mStringSubTitle = new SpannableString(subTitle);
+        mStringSubTitle.setSpan(new TypefaceSpan(this, "Roboto-Light.ttf"), 0, mStringSubTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mActionBar.setSubtitle(mStringSubTitle);
+    }
+
     @Override
     public void setTitle(CharSequence title) {
-        mActionBar.setTitle(title);
+        SpannableString mStringTitle = new SpannableString(title);
+        mStringTitle.setSpan(new TypefaceSpan(this, "Roboto-Medium.ttf"), 0, mStringTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mActionBar.setTitle(mStringTitle);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

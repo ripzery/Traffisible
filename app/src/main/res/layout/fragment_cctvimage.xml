@@ -1,17 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.nhaarman.listviewanimations.itemmanipulation.DynamicListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dynamiclistview2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:layout_marginTop="30dp"
     android:background="@color/cardview_light_background"
-    android:clickable="true"
-    tools:context="com.example.ripzery.traffisible.Fragment.CCTVFragment">
-
-<!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/tvCCTV"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-
-</LinearLayout>
+    android:divider="@android:color/transparent"
+    android:dividerHeight="40dp" />
