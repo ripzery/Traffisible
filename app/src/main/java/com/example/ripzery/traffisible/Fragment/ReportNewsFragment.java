@@ -2,6 +2,7 @@ package com.example.ripzery.traffisible.Fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -99,10 +100,10 @@ public class ReportNewsFragment extends Fragment {
     }
 
     public void loadContent() {
-//        final MediaPlayer mediaPlayer = MediaPlayer.create(myActivity, R.raw.mimimi);
-//        mediaPlayer.seekTo(5500);
-//        mediaPlayer.setVolume((float) 0.3, (float) 0.3);
-//        mediaPlayer.start();
+        final MediaPlayer mediaPlayer = MediaPlayer.create(myActivity, R.raw.mimimi);
+        mediaPlayer.seekTo(5500);
+        mediaPlayer.setVolume((float) 0.3, (float) 0.3);
+        mediaPlayer.start();
         final DynamicListView dynamicListView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
         final ProgressBar mProgressBar = (ProgressBar) myActivity.findViewById(R.id.google_progress);
         mProgressBar.setVisibility(View.VISIBLE);
@@ -111,7 +112,7 @@ public class ReportNewsFragment extends Fragment {
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//                mediaPlayer.stop();
+                mediaPlayer.stop();
                 mProgressBar.setVisibility(View.GONE);
                 jsonString = new String(responseBody);
                 Log.d("URL :", url);
@@ -152,7 +153,7 @@ public class ReportNewsFragment extends Fragment {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                                    myActivity.openMap(listNews, view, i);
+                            myActivity.openMapFragment(listNews, view, i);
                         }
                     });
                 } catch (JsonSyntaxException e) {

@@ -1,7 +1,9 @@
 package com.example.ripzery.traffisible;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,18 +11,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ripzery.traffisible.JSONObjectClass.CCTV;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.UndoAdapter;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -31,18 +41,21 @@ public class CCTVCardAdapter extends BaseAdapter implements UndoAdapter {
     private LayoutInflater inflater;
     private List<CCTV> listCCTV;
     private ImageLoaderConfiguration config;
+    private DisplayImageOptions options;
 
     public CCTVCardAdapter(MyActivity context, List<CCTV> objects) {
         this.listCCTV = objects;
         this.myActivity = context;
+        File cacheDir = StorageUtils.getCacheDirectory(context);
         config = new ImageLoaderConfiguration.Builder(context)
-//                .memoryCacheExtraOptions(480, 800) // default = device screen dimensions
+                .memoryCacheExtraOptions(480, 800) // default = device screen dimensions
                 .diskCacheExtraOptions(480, 800, null)
                 .threadPriority(Thread.NORM_PRIORITY - 1) // default
                 .denyCacheImageMultipleSizesInMemory()
                 .memoryCache(new LruMemoryCache(2 * 1024 * 1024))
                 .memoryCacheSize(2 * 1024 * 1024)
                 .memoryCacheSizePercentage(13) // default
+                .diskCache(new UnlimitedDiscCache(cacheDir))
                 .diskCacheSize(50 * 1024 * 1024)
                 .diskCacheFileCount(100)
                 .diskCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
@@ -50,6 +63,17 @@ public class CCTVCardAdapter extends BaseAdapter implements UndoAdapter {
                 .imageDecoder(new BaseImageDecoder(true)) // default
                 .defaultDisplayImageOptions(DisplayImageOptions.createSimple()) // default
                 .writeDebugLogs()
+                .build();
+
+        options = new DisplayImageOptions.Builder()
+                .resetViewBeforeLoading(false)  // default
+                .cacheInMemory(true) // default
+                .cacheOnDisk(true) // default
+                .considerExifParams(false) // default
+                .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2) // default
+                .bitmapConfig(Bitmap.Config.ARGB_8888) // default
+                .displayer(new SimpleBitmapDisplayer()) // default
+                .handler(new Handler()) // default
                 .build();
     }
 
@@ -97,7 +121,7 @@ public class CCTVCardAdapter extends BaseAdapter implements UndoAdapter {
 
         }
 
-        ViewHolder holder = (ViewHolder) rowView.getTag();
+        final ViewHolder holder = (ViewHolder) rowView.getTag();
         CCTV cctv = listCCTV.get(position);
         String s = cctv.getName();
 //        Log.d("test", s);
@@ -113,7 +137,32 @@ public class CCTVCardAdapter extends BaseAdapter implements UndoAdapter {
 
 
         ImageLoader.getInstance().init(config);
-        ImageLoader.getInstance().displayImage(listCCTV.get(position).getUrl(), holder.ivCCTV);
+        final View finalRowView = rowView;
+        ImageLoader.getInstance().displayImage(listCCTV.get(position).getUrl(), holder.ivCCTV, options, new ImageLoadingListener() {
+            ProgressBar mProgressBar = (ProgressBar) finalRowView.findViewById(R.id.google_progress3);
+
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+//                mProgressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                mProgressBar.setVisibility(View.GONE);
+                holder.ivCCTV.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+
+            }
+        });
+
 
         return rowView;
     }

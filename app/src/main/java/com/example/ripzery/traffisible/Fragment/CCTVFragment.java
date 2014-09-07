@@ -3,6 +3,7 @@ package com.example.ripzery.traffisible.Fragment;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.example.ripzery.traffisible.CCTVCardAdapter;
 import com.example.ripzery.traffisible.JSONObjectClass.CCTV;
@@ -111,13 +113,27 @@ public class CCTVFragment extends Fragment {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                            myActivity.openCCTVFragment(listCCTV, view, i);
                         }
                     });
 
 
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
+                    Toast.makeText(myActivity, "Connection failed !", Toast.LENGTH_SHORT).show();
+                    myActivity.setPassKey();
+                    new CountDownTimer(5500, 1000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            Toast.makeText(myActivity, "Reconnect in " + millisUntilFinished / 1000, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            passKey = myActivity.getPassKey();
+                            loadContent();
+                        }
+                    }.start();
                 }
             }
 

@@ -12,6 +12,7 @@ public class CCTV {
     private String src;
     private String desc;
     private String list;
+    private Point point = new Point();
 
     public CCTV() {
 
@@ -58,6 +59,10 @@ public class CCTV {
 
     public String getList() {
         return list;
+    }
+
+    public Point getPoint() {
+        return point;
     }
 
     public static class Point {

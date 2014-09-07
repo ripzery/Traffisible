@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +22,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ripzery.traffisible.Fragment.CCTVFragment;
+import com.example.ripzery.traffisible.Fragment.MapsCCTVFragment;
 import com.example.ripzery.traffisible.Fragment.MapsFragment;
 import com.example.ripzery.traffisible.Fragment.ReportNewsFragment;
+import com.example.ripzery.traffisible.JSONObjectClass.CCTV;
 import com.example.ripzery.traffisible.JSONObjectClass.News;
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
@@ -44,6 +47,7 @@ public class MyActivity extends FragmentActivity {
     private static String KEY = "jADjas9PXU";
     private Fragment reportFrag, cctvFrag;
     private MapsFragment mapsFragment;
+    private MapsCCTVFragment mapsCCTVFragment;
     private ActionBarDrawerToggle mDrawerToggle;
     private String[] mDrawerString;
     private ListView mDrawerList;
@@ -121,7 +125,7 @@ public class MyActivity extends FragmentActivity {
 
     }
 
-    public void openMap(ArrayList<News> listNews, View view, int i) {
+    public void openMapFragment(ArrayList<News> listNews, View view, int i) {
 
 //        Log.d("Text",""+listNews.get(i).getTitle());
         News news = listNews.get(i);
@@ -158,6 +162,24 @@ public class MyActivity extends FragmentActivity {
         transaction.add(R.id.content_layout, mapsFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void openCCTVFragment(ArrayList<CCTV> listCCTV, View view, int i) {
+        CCTV cctv = listCCTV.get(i);
+        CCTV.Point point = cctv.getPoint();
+        Bundle bundle = new Bundle();
+        Log.d("Position", "Lat : " + point.getLat() + " Long : " + point.getLng());
+        bundle.putString("name", cctv.getName());
+        bundle.putString("lat", point.getLat());
+        bundle.putString("lng", point.getLng());
+        bundle.putString("img", cctv.getUrl());
+        mapsCCTVFragment = new MapsCCTVFragment();
+        mapsCCTVFragment.setArguments(bundle);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.content_layout, mapsCCTVFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
     }
 
     @Override
