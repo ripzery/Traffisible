@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.ripzery.traffisible.CardAdapter;
 import com.example.ripzery.traffisible.JSONObjectClass.News;
@@ -76,6 +77,9 @@ public class ReportNewsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            passKey = getArguments().getString("passkey");
+        }
         super.onCreate(savedInstanceState);
 
     }
@@ -96,97 +100,81 @@ public class ReportNewsFragment extends Fragment {
 
     public void loadContent() {
         final MediaPlayer mediaPlayer = MediaPlayer.create(myActivity, R.raw.mimimi);
-        final DynamicListView dynamicListView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
         mediaPlayer.seekTo(5500);
         mediaPlayer.setVolume((float) 0.5, (float) 0.5);
         mediaPlayer.start();
-
+        final DynamicListView dynamicListView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
         final ProgressBar mProgressBar = (ProgressBar) myActivity.findViewById(R.id.google_progress);
-//        mProgressBar.setIndeterminateDrawable(new FoldingCirclesDrawable.Builder(myActivity)
-//                .build());
         mProgressBar.setVisibility(View.VISIBLE);
-        final AsyncHttpClient client = new AsyncHttpClient();
-
-        client.get("http://api.traffy.in.th/apis/getKey.php?appid=" + APP_ID, new AsyncHttpResponseHandler() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        url = getURL("getIncident", "JSON", APP_ID);
+        client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                mediaPlayer.stop();
+                mProgressBar.setVisibility(View.GONE);
+                jsonString = new String(responseBody);
+                Log.d("URL :", url);
+                Gson gson = new Gson();
 
-                String randomString = new String(responseBody);
-                passKey = md5(APP_ID + randomString) + md5(KEY + randomString);
-                url = getURL("getIncident", "JSON", APP_ID);
-                client.get(url, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        mediaPlayer.stop();
-                        mProgressBar.setVisibility(View.GONE);
+                JsonParser jsonParser = new JsonParser();
+                try {
+                    jsonElement = jsonParser.parse(jsonString);
+                    if (jsonElement.isJsonObject()) {
+                        jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
+                    } else {
+                        loadContent();
+                    }
 
-                        jsonString = new String(responseBody);
-                        Log.d("URL :", url);
-                        Gson gson = new Gson();
+                    News[] news = gson.fromJson(jsonElement, News[].class);
+                    Log.d("News Size", "" + news.length);
 
-                        JsonParser jsonParser = new JsonParser();
-                        try {
-                            jsonElement = jsonParser.parse(jsonString);
-                            jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
-                            News[] news = gson.fromJson(jsonElement, News[].class);
-                            Log.d("News Size", "" + news.length);
+                    listNews = new ArrayList<News>();
+                    for (News temp : news) {
+                        listNews.add(temp);
+                    }
 
-                            listNews = new ArrayList<News>();
-                            for (News temp : news) {
-                                listNews.add(temp);
-                            }
+                    listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
+                    final CardAdapter adapter = new CardAdapter(myActivity, listNews);
+                    AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
+                    animationAdapter.setAbsListView(listView);
+                    listView.setAdapter(adapter);
 
-                            listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
-                            final CardAdapter adapter = new CardAdapter(myActivity, listNews);
-                            AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
-                            animationAdapter.setAbsListView(listView);
-                            listView.setAdapter(adapter);
-
-                            TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, myActivity,
-                                    new OnDismissCallback() {
-                                        @Override
-                                        public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
-                                            for (int position : ints) {
-                                                listNews.remove(position);
-                                                adapter.notifyDataSetChanged();
-                                            }
-                                        }
-                                    });
-                            timedUndoAdapter.setAbsListView(listView);
-                            listView.setAdapter(timedUndoAdapter);
-                            listView.enableSimpleSwipeUndo();
-
-                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    TimedUndoAdapter timedUndoAdapter = new TimedUndoAdapter(adapter, myActivity,
+                            new OnDismissCallback() {
                                 @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    myActivity.openMap(listNews, view, i);
+                                public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
+                                    for (int position : ints) {
+                                        listNews.remove(position);
+                                        adapter.notifyDataSetChanged();
+                                    }
                                 }
                             });
-                            dynamicListView.setVisibility(View.VISIBLE);
-                        } catch (JsonSyntaxException e) {
-                            loadContent();
-                        } catch (NullPointerException e) {
-                            loadContent();
+                    timedUndoAdapter.setAbsListView(listView);
+                    listView.setAdapter(timedUndoAdapter);
+                    listView.enableSimpleSwipeUndo();
+
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                                    myActivity.openMap(listNews, view, i);
                         }
+                    });
+                } catch (JsonSyntaxException e) {
+                    loadContent();
+                } catch (NullPointerException e) {
+                    loadContent();
+                }
+                dynamicListView.setVisibility(View.VISIBLE);
 
-
-                    }
-
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                    }
-                });
             }
+
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("Response", "Failure");
+                Toast.makeText(myActivity, "Check your internet connection", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
     public String getURL(String apiType, String apiFormat, String APP_ID) {

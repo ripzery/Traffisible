@@ -6,6 +6,10 @@
         jar="/Users/visit/.gradle/caches/modules-2/files-2.1/com.loopj.android/android-async-http/1.4.5/77bf7cacf9cefe19dc105e5425d2eb1bb5285881/android-async-http-1.4.5.jar"
         jumboMode="false" revision="20.0.0" sha1="77bf7cacf9cefe19dc105e5425d2eb1bb5285881" />
     <item
+        dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-0eca336e55c3427569788c5c83745b1d0baf9ef5.jar"
+        jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/classes.jar"
+        jumboMode="false" revision="20.0.0" sha1="8b3d9a7b348d8bcfb4d740dfaf70bc374cdae9d6" />
+    <item
         dex="/Users/visit/Desktop/Traffisible/app/build/intermediates/pre-dexed/debug/classes-78022da4a64940ec23d7b7f882f13adf09896fa2.jar"
         jar="/Users/visit/Desktop/Traffisible/app/build/intermediates/exploded-aar/com.nhaarman.listviewanimations/lib-core-slh/3.1.0/classes.jar"
         jumboMode="false" revision="20.0.0" sha1="49223278ec2ede1d05d00868c5ce3e077b4016f8" />

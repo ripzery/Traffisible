@@ -18,7 +18,7 @@
             android:layout_gravity="center"
             android:visibility="gone"
             gpb:colors="@array/colors"
-            gpb:type="folding_circles" />
+            gpb:type="nexus_rotation_cross" />
 
     </FrameLayout>
 

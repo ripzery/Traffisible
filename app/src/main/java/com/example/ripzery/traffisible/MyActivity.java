@@ -16,18 +16,30 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ripzery.traffisible.Fragment.CCTVFragment;
 import com.example.ripzery.traffisible.Fragment.MapsFragment;
 import com.example.ripzery.traffisible.Fragment.ReportNewsFragment;
 import com.example.ripzery.traffisible.JSONObjectClass.News;
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import org.apache.http.Header;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 
 public class MyActivity extends FragmentActivity {
 
+    private static String APP_ID = "61d787a9";
+    private static String KEY = "jADjas9PXU";
     private Fragment reportFrag, cctvFrag;
     private MapsFragment mapsFragment;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -36,9 +48,20 @@ public class MyActivity extends FragmentActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBar mActionBar;
     private Fragment newFragment, oldFragment;
-    private TextView mActionTitle;
-    private int actionBarTitleId;
+    private String passKey = "";
 
+    public static String md5(String s) {
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+            digest.update(s.getBytes(), 0, s.length());
+            String hash = new BigInteger(1, digest.digest()).toString(16);
+            return hash;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +94,32 @@ public class MyActivity extends FragmentActivity {
                 R.string.drawer_close);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        new ShowcaseView.Builder(this)
+                .setTarget(new ActionViewTarget(this, ActionViewTarget.Type.HOME))
+                .setContentTitle("Navigation Drawer")
+                .setContentText("You can click here to show menus of content.")
+                .hideOnTouchOutside()
+                .setShowcaseEventListener(new OnShowcaseEventListener() {
+                    @Override
+                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+
+                    }
+
+                    @Override
+                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+                    }
+
+                    @Override
+                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                    }
+                })
+                .build();
+
+        if (!isPassKeySet())
+            setPassKey();
 
     }
 
@@ -153,12 +202,33 @@ public class MyActivity extends FragmentActivity {
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);
 
+        if (position < 2 && !isPassKeySet()) {
+            Toast.makeText(getApplicationContext(), "Missing passkey!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putString("passkey", passKey);
+
         switch (position) {
             case 0:
-                newFragment = reportFrag = reportFrag == null ? new ReportNewsFragment() : reportFrag;
+                if (reportFrag == null) {
+                    reportFrag = new ReportNewsFragment();
+                    reportFrag.setArguments(bundle);
+                    newFragment = reportFrag;
+                } else {
+                    newFragment = reportFrag;
+                }
                 break;
             case 1:
-                newFragment = cctvFrag = cctvFrag == null ? new CCTVFragment() : cctvFrag;
+
+                if (cctvFrag == null) {
+                    cctvFrag = new CCTVFragment();
+                    cctvFrag.setArguments(bundle);
+                    newFragment = cctvFrag;
+                } else {
+                    newFragment = cctvFrag;
+                }
                 break;
             case 3:
                 int pid = android.os.Process.myPid();
@@ -173,6 +243,31 @@ public class MyActivity extends FragmentActivity {
                 transaction.add(R.id.content_layout, newFragment);
             }
             transaction.commit();
+        }
+    }
+
+    public void setPassKey() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://api.traffy.in.th/apis/getKey.php?appid=" + APP_ID, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String randomString = new String(responseBody);
+                passKey = md5(APP_ID + randomString) + md5(KEY + randomString);
+                Toast.makeText(getApplicationContext(), "Passkey to access API has been set successfully.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                setPassKey();
+            }
+        });
+    }
+
+    public boolean isPassKeySet() {
+        if (passKey.equals("")) {
+            return false;
+        } else {
+            return true;
         }
     }
 
