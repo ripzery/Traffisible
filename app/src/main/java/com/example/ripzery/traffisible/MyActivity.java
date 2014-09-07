@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ripzery.traffisible.Fragment.CCTVFragment;
@@ -248,17 +249,23 @@ public class MyActivity extends FragmentActivity {
 
     public void setPassKey() {
         AsyncHttpClient client = new AsyncHttpClient();
+        client.setTimeout(5000);
+        final ProgressBar mProgressBar = (ProgressBar) findViewById(R.id.google_progress);
+        mProgressBar.setVisibility(View.VISIBLE);
         client.get("http://api.traffy.in.th/apis/getKey.php?appid=" + APP_ID, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String randomString = new String(responseBody);
                 passKey = md5(APP_ID + randomString) + md5(KEY + randomString);
                 Toast.makeText(getApplicationContext(), "Passkey to access API has been set successfully.", Toast.LENGTH_SHORT).show();
+                mProgressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                setPassKey();
+                Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
+                mProgressBar.setVisibility(View.GONE);
+//                setPassKey();
             }
         });
     }

@@ -2,8 +2,8 @@ package com.example.ripzery.traffisible.Fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -99,10 +99,10 @@ public class ReportNewsFragment extends Fragment {
     }
 
     public void loadContent() {
-        final MediaPlayer mediaPlayer = MediaPlayer.create(myActivity, R.raw.mimimi);
-        mediaPlayer.seekTo(5500);
-        mediaPlayer.setVolume((float) 0.5, (float) 0.5);
-        mediaPlayer.start();
+//        final MediaPlayer mediaPlayer = MediaPlayer.create(myActivity, R.raw.mimimi);
+//        mediaPlayer.seekTo(5500);
+//        mediaPlayer.setVolume((float) 0.3, (float) 0.3);
+//        mediaPlayer.start();
         final DynamicListView dynamicListView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
         final ProgressBar mProgressBar = (ProgressBar) myActivity.findViewById(R.id.google_progress);
         mProgressBar.setVisibility(View.VISIBLE);
@@ -111,7 +111,7 @@ public class ReportNewsFragment extends Fragment {
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                mediaPlayer.stop();
+//                mediaPlayer.stop();
                 mProgressBar.setVisibility(View.GONE);
                 jsonString = new String(responseBody);
                 Log.d("URL :", url);
@@ -123,7 +123,7 @@ public class ReportNewsFragment extends Fragment {
                     if (jsonElement.isJsonObject()) {
                         jsonElement = jsonElement.getAsJsonObject().getAsJsonObject("info").get("news");
                     } else {
-                        loadContent();
+//                        loadContent();
                     }
 
                     News[] news = gson.fromJson(jsonElement, News[].class);
@@ -161,9 +161,20 @@ public class ReportNewsFragment extends Fragment {
                         }
                     });
                 } catch (JsonSyntaxException e) {
-                    loadContent();
-                } catch (NullPointerException e) {
-                    loadContent();
+                    e.printStackTrace();
+                    Toast.makeText(myActivity, "Connection failed !", Toast.LENGTH_SHORT).show();
+                    new CountDownTimer(3500, 1000) {
+
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            Toast.makeText(myActivity, "Reconnect in " + millisUntilFinished / 1000, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            loadContent();
+                        }
+                    }.start();
                 }
                 dynamicListView.setVisibility(View.VISIBLE);
 
