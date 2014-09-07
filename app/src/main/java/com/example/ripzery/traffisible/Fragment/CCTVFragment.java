@@ -46,6 +46,7 @@ public class CCTVFragment extends Fragment {
     private MyActivity myActivity;
     private OnFragmentInteractionListener mListener;
     private ArrayList<CCTV> listCCTV = new ArrayList<CCTV>();
+    private DynamicListView listView;
 
     public CCTVFragment() {
         // Required empty public constructor
@@ -90,7 +91,7 @@ public class CCTVFragment extends Fragment {
                         listCCTV.add(gson.fromJson(jsonElement, CCTV.class));
                     }
 
-                    DynamicListView listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview2);
+                    listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview2);
                     final CCTVCardAdapter adapter = new CCTVCardAdapter(myActivity, listCCTV);
                     AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter(adapter);
                     animationAdapter.setAbsListView(listView);
@@ -125,7 +126,12 @@ public class CCTVFragment extends Fragment {
                     new CountDownTimer(5500, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
-                            Toast.makeText(myActivity, "Reconnect in " + millisUntilFinished / 1000, Toast.LENGTH_SHORT).show();
+                            if (listView.getChildAt(0) == null)
+                                Toast.makeText(myActivity, "Reconnect in " + millisUntilFinished / 1000, Toast.LENGTH_SHORT).show();
+                            else {
+                                Toast.makeText(myActivity, "Connection was successful", Toast.LENGTH_SHORT).show();
+                            }
+
                         }
 
                         @Override
