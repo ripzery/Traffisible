@@ -126,7 +126,7 @@ public class CCTVFragment extends Fragment {
                     new CountDownTimer(5500, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
-                            if (listView.getChildAt(0) == null)
+                            if (listView == null)
                                 Toast.makeText(myActivity, "Reconnect in " + millisUntilFinished / 1000, Toast.LENGTH_SHORT).show();
                             else {
                                 Toast.makeText(myActivity, "Connection was successful", Toast.LENGTH_SHORT).show();
