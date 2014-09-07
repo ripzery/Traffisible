@@ -84,7 +84,7 @@ public class TrafficNewsCardAdapter extends BaseAdapter implements UndoAdapter {
 
         if (s.equals("เพลิงไหม้")) {
             holder.icon.setText("{fa-fire-extinguisher}");
-        } else if (type.equals("เหตุฉุกเฉิน")) {
+        } else if (type.equals("เหตุฉุกเฉิน") || type.equals("น้ำท่วม")) {
             holder.icon.setText("{fa-exclamation-circle}");
         } else if (type.equals("การก่อสร้าง")) {
             holder.icon.setText("{fa-gavel}");
@@ -95,7 +95,7 @@ public class TrafficNewsCardAdapter extends BaseAdapter implements UndoAdapter {
         } else if (s.equals("ปิด")) {
             holder.icon.setText("{fa-lock}");
         } else if (s.equals("เปิด")) {
-            holder.icon.setText(("fa-unlock"));
+            holder.icon.setText(("{fa-unlock}"));
         } else if (s.equals("อื่นๆ")) {
             holder.icon.setText("{fa-ellipsis-v}");
         }
