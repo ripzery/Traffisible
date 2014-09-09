@@ -141,13 +141,10 @@ public class ReportNewsFragment extends Fragment {
                     e.printStackTrace();
                     Toast.makeText(myActivity, "Connection failed !", Toast.LENGTH_SHORT).show();
                     myActivity.setPassKey();
-                    new CountDownTimer(3500, 1000) {
+                    new CountDownTimer(2500, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
-                            if (listView == null)
-                                Toast.makeText(myActivity, "Reconnect in " + millisUntilFinished / 1000, Toast.LENGTH_SHORT).show();
-                            else
-                                Toast.makeText(myActivity, "Connection was successful", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(myActivity, "Reconnect...", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

@@ -251,6 +251,7 @@ public class MyActivity extends FragmentActivity {
                     transaction.hide(oldFragment);
                 transaction.add(R.id.content_layout, newFragment);
             }
+//            transaction.replace(R.id.content_layout, newFragment);
             transaction.commit();
         }
     }
