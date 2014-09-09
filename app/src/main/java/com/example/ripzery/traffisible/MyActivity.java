@@ -42,8 +42,8 @@ import java.util.ArrayList;
 
 public class MyActivity extends FragmentActivity {
 
-    private static String APP_ID = "61d787a9";
-    private static String KEY = "jADjas9PXU";
+    private static final String APP_ID = "61d787a9";
+    private static final String KEY = "jADjas9PXU";
     private Fragment reportFrag, cctvFrag;
     private MapsFragment mapsFragment;
     private MapsCCTVFragment mapsCCTVFragment;
@@ -56,13 +56,12 @@ public class MyActivity extends FragmentActivity {
     private String passKey = "";
     private ShowcaseView builder, builder2;
 
-    public static String md5(String s) {
+    private static String md5(String s) {
         MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("MD5");
             digest.update(s.getBytes(), 0, s.length());
-            String hash = new BigInteger(1, digest.digest()).toString(16);
-            return hash;
+            return new BigInteger(1, digest.digest()).toString(16);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -93,17 +92,7 @@ public class MyActivity extends FragmentActivity {
                 mDrawerLayout,
                 R.drawable.ic_drawer,
                 R.string.drawer_open,
-                R.string.drawer_close) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-        };
+                R.string.drawer_close);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         builder =
@@ -211,18 +200,6 @@ public class MyActivity extends FragmentActivity {
 
     private void selectItem(final int position) {
 
-//        if(builder2 == null && position == 0){
-//            ViewTarget viewTarget = new ViewTarget(mDrawerList.getChildAt(0).getId(),this);
-//            builder2 = new ShowcaseView.Builder(this)
-//                    .setTarget(viewTarget)
-//                    .setContentTitle("Incident News Feed")
-//                    .setContentText("Get fresh incident news here by most recently updated")
-//                    .hideOnTouchOutside()
-//                    .build();
-//        }
-//
-//
-
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out);
         oldFragment = newFragment;
@@ -270,6 +247,8 @@ public class MyActivity extends FragmentActivity {
                 transaction.hide(oldFragment);
                 transaction.show(newFragment);
             } else {
+                if (oldFragment != null)
+                    transaction.hide(oldFragment);
                 transaction.add(R.id.content_layout, newFragment);
             }
             transaction.commit();
@@ -314,11 +293,7 @@ public class MyActivity extends FragmentActivity {
     }
 
     public boolean isPassKeySet() {
-        if (passKey.equals("")) {
-            return false;
-        } else {
-            return true;
-        }
+        return !passKey.equals("");
     }
 
     public void setSubTitle(String subTitle) {

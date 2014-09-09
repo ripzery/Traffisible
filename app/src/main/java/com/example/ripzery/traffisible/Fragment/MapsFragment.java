@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
-    private LatLngBounds Thailand = new LatLngBounds(new LatLng(5.371270, 97.859916), new LatLng(19.680066, 104.957083));
+    private final LatLngBounds Thailand = new LatLngBounds(new LatLng(5.371270, 97.859916), new LatLng(19.680066, 104.957083));
     private String mName, mDescription, mTitle, mType;
     private String mLatitude, mLongitude;
     private View mRootView;
@@ -63,8 +63,8 @@ public class MapsFragment extends Fragment {
             @Override
             public void onMapLoaded() {
 //                setUpMap();
-                setCameraPosition(latlng, 14, 45);
-                MarkerOptions marker = null;
+                setCameraPosition(latlng);
+                MarkerOptions marker;
 
                 String extend = "";
                 if (mTitle.equals("การก่อสร้าง")) {
@@ -98,8 +98,8 @@ public class MapsFragment extends Fragment {
         return bitmap;
     }
 
-    private void setCameraPosition(LatLng Location, int zoomLevel, int tilt) {
-        CameraPosition camPos = new CameraPosition.Builder().target(Location).zoom(zoomLevel).tilt(tilt).build();
+    private void setCameraPosition(LatLng Location) {
+        CameraPosition camPos = new CameraPosition.Builder().target(Location).zoom(14).tilt(45).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camPos));
     }
 

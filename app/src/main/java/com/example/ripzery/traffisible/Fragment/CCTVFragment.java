@@ -37,15 +37,14 @@ import java.util.Set;
 
 
 public class CCTVFragment extends Fragment {
+    private final ArrayList<CCTV> listCCTV = new ArrayList<CCTV>();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private String passKey = "", appId = "";
-
     // TODO: Rename and change types of parameters
     private View mRootView;
     private MyActivity myActivity;
     private OnFragmentInteractionListener mListener;
-    private ArrayList<CCTV> listCCTV = new ArrayList<CCTV>();
     private DynamicListView listView;
 
     public CCTVFragment() {

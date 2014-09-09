@@ -32,18 +32,14 @@ import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.TimedU
 
 import org.apache.http.Header;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ReportNewsFragment extends Fragment {
 
-    private static String APP_ID = "61d787a9";
-    private static String KEY = "jADjas9PXU";
+    private static final String APP_ID = "61d787a9";
     private JsonElement jsonElement;
     private String jsonString;
-    private String randomString = "";
     private String url;
     private String passKey = "";
     private ArrayList<News> listNews;
@@ -54,19 +50,6 @@ public class ReportNewsFragment extends Fragment {
 
     public ReportNewsFragment() {
 
-    }
-
-    public static String md5(String s) {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("MD5");
-            digest.update(s.getBytes(), 0, s.length());
-            String hash = new BigInteger(1, digest.digest()).toString(16);
-            return hash;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return "";
     }
 
     @Override
@@ -108,7 +91,7 @@ public class ReportNewsFragment extends Fragment {
         final ProgressBar mProgressBar = (ProgressBar) myActivity.findViewById(R.id.google_progress);
         mProgressBar.setVisibility(View.VISIBLE);
         AsyncHttpClient client = new AsyncHttpClient();
-        url = getURL("getIncident", "JSON", APP_ID);
+        url = getURL(APP_ID);
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -126,9 +109,7 @@ public class ReportNewsFragment extends Fragment {
                     Log.d("News Size", "" + news.length);
 
                     listNews = new ArrayList<News>();
-                    for (News temp : news) {
-                        listNews.add(temp);
-                    }
+                    Collections.addAll(listNews, news);
 
                     listView = (DynamicListView) mRootView.findViewById(R.id.dynamiclistview);
                     final TrafficNewsCardAdapter adapter = new TrafficNewsCardAdapter(myActivity, listNews);
@@ -188,8 +169,8 @@ public class ReportNewsFragment extends Fragment {
         });
     }
 
-    public String getURL(String apiType, String apiFormat, String APP_ID) {
-        return "http://api.traffy.in.th/apis/apitraffy.php?api=" + apiType + "&key=" + passKey + "&format=" + apiFormat + "&appid=" + APP_ID;
+    public String getURL(String APP_ID) {
+        return "http://api.traffy.in.th/apis/apitraffy.php?api=" + "getIncident" + "&key=" + passKey + "&format=" + "JSON" + "&appid=" + APP_ID;
     }
 
 }

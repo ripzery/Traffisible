@@ -37,11 +37,11 @@ import java.util.List;
  * Created by visit on 9/7/14 AD.
  */
 public class CCTVCardAdapter extends BaseAdapter implements UndoAdapter {
-    private MyActivity myActivity;
+    private final MyActivity myActivity;
+    private final List<CCTV> listCCTV;
+    private final ImageLoaderConfiguration config;
+    private final DisplayImageOptions options;
     private LayoutInflater inflater;
-    private List<CCTV> listCCTV;
-    private ImageLoaderConfiguration config;
-    private DisplayImageOptions options;
 
     public CCTVCardAdapter(MyActivity context, List<CCTV> objects) {
         this.listCCTV = objects;

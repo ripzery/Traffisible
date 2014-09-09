@@ -20,9 +20,9 @@ import java.util.List;
  * Created by visit on 9/1/14 AD.
  */
 public class TrafficNewsCardAdapter extends BaseAdapter implements UndoAdapter {
-    private MyActivity myActivity;
+    private final MyActivity myActivity;
+    private final List<News> listNews;
     private LayoutInflater inflater;
-    private List<News> listNews;
 
     public TrafficNewsCardAdapter(MyActivity context, List<News> objects) {
         this.listNews = objects;

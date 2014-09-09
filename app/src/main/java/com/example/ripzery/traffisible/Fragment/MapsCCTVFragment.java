@@ -30,7 +30,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 public class MapsCCTVFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
-    private LatLngBounds Thailand = new LatLngBounds(new LatLng(5.371270, 97.859916), new LatLng(19.680066, 104.957083));
+    private final LatLngBounds Thailand = new LatLngBounds(new LatLng(5.371270, 97.859916), new LatLng(19.680066, 104.957083));
     private String mName, mURL;
     private String mLatitude, mLongitude;
     private View mRootView;
@@ -76,7 +76,7 @@ public class MapsCCTVFragment extends Fragment {
         final ImageView imgView = (ImageView) mRootView.findViewById(R.id.ivCCTVImg);
         ImageLoader.getInstance().init(config);
         ImageLoader.getInstance().displayImage(mURL, imgView, new ImageLoadingListener() {
-            ProgressBar mProgressBar = (ProgressBar) mRootView.findViewById(R.id.google_progress2);
+            final ProgressBar mProgressBar = (ProgressBar) mRootView.findViewById(R.id.google_progress2);
 
             @Override
             public void onLoadingStarted(String imageUri, View view) {
@@ -110,11 +110,11 @@ public class MapsCCTVFragment extends Fragment {
             public void onMapLoaded() {
 //                setUpMap();
                 if (mName.equals("Rain Detection Radar")) {
-                    setCameraPosition(latlng, 8, 45);
+                    setCameraPosition(latlng, 8);
                 } else
-                    setCameraPosition(latlng, 14, 45);
+                    setCameraPosition(latlng, 14);
 
-                MarkerOptions marker = null;
+                MarkerOptions marker;
                 marker = new MarkerOptions().position(latlng).title(mName);
                 mMap.addMarker(marker);
             }
@@ -122,8 +122,8 @@ public class MapsCCTVFragment extends Fragment {
         return view;
     }
 
-    private void setCameraPosition(LatLng Location, int zoomLevel, int tilt) {
-        CameraPosition camPos = new CameraPosition.Builder().target(Location).zoom(zoomLevel).tilt(tilt).build();
+    private void setCameraPosition(LatLng Location, int zoomLevel) {
+        CameraPosition camPos = new CameraPosition.Builder().target(Location).zoom(zoomLevel).tilt(45).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(camPos));
     }
 

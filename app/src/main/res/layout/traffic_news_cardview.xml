@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <android.support.v7.widget.CardView
 
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +25,6 @@
             android:background="@color/cardview_background"
             android:gravity="center"
             android:paddingLeft="10dp"
-            android:text="{fa-android}"
             android:textColor="@color/action_bar_panel"
             android:textSize="80sp" />
 

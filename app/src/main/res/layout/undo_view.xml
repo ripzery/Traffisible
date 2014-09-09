@@ -34,9 +34,9 @@
         android:layout_weight="1"
         android:background="@color/action_bar_panel"
         android:gravity="center"
-        android:text="{fa-reply}"
+        android:text="@string/undo_icon"
         android:textColor="@color/cardview_background"
-        android:textSize="50dp" />
+        android:textSize="50sp" />
 
 
 </LinearLayout>

@@ -4,6 +4,7 @@ package com.example.ripzery.traffisible.JSONObjectClass;
  * Created by visit on 9/7/14 AD.
  */
 public class CCTV {
+    private final Point point = new Point();
     private String name;
     private String name_th;
     private String available;
@@ -12,7 +13,6 @@ public class CCTV {
     private String src;
     private String desc;
     private String list;
-    private Point point = new Point();
 
     public CCTV() {
 

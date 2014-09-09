@@ -1,16 +1,16 @@
 package com.example.ripzery.traffisible.JSONObjectClass;
 
 public class News {
-    private String id;
-    private String type;
-    private String primarysource;
-    private String secondarysource;
-    private String starttime;
-    private String endtime;
-    private String title;
-    private String description;
-    private Location location = new Location();
-    private Media media = new Media();
+    private final String id;
+    private final String type;
+    private final String primarysource;
+    private final String secondarysource;
+    private final String starttime;
+    private final String endtime;
+    private final String title;
+    private final String description;
+    private final Location location = new Location();
+    private final Media media = new Media();
 
     public News(String id, String type, String primarysource, String secondarysource, String starttime, String endtime, String title, String description) {
         this.id = id;
@@ -87,11 +87,11 @@ public class News {
     }
 
     public static class Location {
+        private final Point point = new Point();
+        private final Road road = new Road();
+        private final StartPoint startPoint = new StartPoint();
+        private final EndPoint endPoint = new EndPoint();
         private String type;
-        private Point point = new Point();
-        private Road road = new Road();
-        private StartPoint startPoint = new StartPoint();
-        private EndPoint endPoint = new EndPoint();
 
         public Location() {
 

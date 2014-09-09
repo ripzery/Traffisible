@@ -2,10 +2,13 @@
 <resources>
 
     <string name="app_name">Traffisible</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_title">TRAFFISIBLE</string>
+    <string name="app_subtitle">รายงานข่าวจราจร</string>
+    <string name="undo_icon">{fa-reply}</string>
+    <string name="img_cctv_content_des">CCTV Image</string>
 
 </resources>
